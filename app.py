@@ -232,8 +232,8 @@ st.markdown("""
         <div class="label">Potential Lost<br>by non-placed apps</div>
     </div>
     <div class="kpi kpi-green">
-        <div class="number">9:1</div>
-        <div class="label">Partner ROI<br>at target price</div>
+        <div class="number">93%+</div>
+        <div class="label">Single Channel Dependency<br>without placement</div>
     </div>
     <div class="kpi kpi-gold">
         <div class="number">EUR 70K-190K</div>
@@ -499,9 +499,9 @@ with tab1:
         ("Method 1 - Cost per Incremental Device", "EUR 46K - EUR 76K", 46, 76, C['blue'],
          "EUR 350K / 1.88M incremental = EUR 0.19/device. Applied to +242K incremental devices."),
         ("Method 2 - Ad Revenue Value (AVOD)", "EUR 140K - EUR 210K", 140, 210, C['placed'],
-         "23.2M incremental sessions x EUR 20 CPM = EUR 1.4M. Fee = 10-15% of incremental revenue."),
+         "23.2M incremental sessions x EUR 20 CPM = EUR 1.4M incremental ad revenue potential. Fee = 10-15%."),
         ("Method 3 - Premium Subscription Conversion", "EUR 140K - EUR 210K", 140, 210, C['purple'],
-         "24.2K new subs x EUR 3.99 x 12 = EUR 1.16M in sub revenue. Fee = 12-18%."),
+         "24.2K new subs x EUR 3.99 x 12 = EUR 1.16M in incremental subscription revenue. Fee = 12-18%."),
         ("Method 4 - Market Proportionality", "EUR 85K - EUR 120K", 85, 120, '#E67E22',
          "Global apps: 14M users = EUR 350K = EUR 0.025/user. Mediaset 3.4M x EUR 0.025 x 1.35 = EUR 115K.")
     ]
@@ -567,12 +567,12 @@ st.markdown("""
     <tr>
         <td><strong>Target</strong></td><td>Launcher</td>
         <td><strong>EUR 110K - EUR 150K</strong></td>
-        <td>Fee = 8-11% of incremental ad revenue (EUR 1.4M+).</td>
+        <td>Estimated +242K incremental devices. Up to EUR 1.4M incremental ad revenue.</td>
     </tr>
     <tr>
         <td><strong>Premium</strong></td><td>Launcher + OOBE + Home Reco + Banner</td>
         <td><strong>EUR 150K - EUR 190K</strong></td>
-        <td>Maximum visibility at ~50% of global price.</td>
+        <td>Maximum visibility at ~50% of global price. Up to +401K devices.</td>
     </tr>
     <tr>
         <td>Ref: Global</td><td>Full package</td>
@@ -584,8 +584,8 @@ st.markdown("""
 
 st.markdown("""
 <div class="cta-box">
-    <h3>Partner ROI: Even at EUR 150K/year the incremental ad revenue is EUR 1.4M+ = ROI of 9:1</h3>
-    <p>The Launcher Placement pays for itself nearly 10 times over.</p>
+    <h3>Placement unlocks up to +401K incremental devices and EUR 1.4M+ in incremental ad revenue</h3>
+    <p>At 50-70% below what global platforms pay, this is a strategic entry point for local partners.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -615,7 +615,7 @@ with col1:
         +23% YoY growth in digital users<br>
         3.4M users but only 4.2% LG penetration (losing 54%)<br>
         FIFA Club World Cup rights = maximize reach<br>
-        ROI 9:1 at EUR 150K<br>
+        Potential: +242K to +401K incremental devices<br>
         Warning: If Atresplayer signs first, you lose ground permanently
         </p>
     </div>
@@ -628,7 +628,7 @@ with col2:
         Best visitors since May 2024 (3.2M, +20% YoY)<br>
         3.6M users but only 3.6% LG penetration (losing 59%)<br>
         Most national premieres of any platform<br>
-        ROI 8-10:1 at EUR 110-150K<br>
+        Potential: +303K to +471K incremental devices<br>
         Warning: If Mediaset enters Launcher, you lose share
         </p>
     </div>
@@ -663,7 +663,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Acronyms
 acr_rows = ""
 for acr, defn in [
     ('ARPU', 'Average Revenue Per User.'),
@@ -674,7 +673,6 @@ for acr, defn in [
     ('FAST', 'Free Ad-Supported Streaming TV.'),
     ('GIP', 'Global Input Priority - auto-launches last-used app on power-on.'),
     ('OOBE', 'Out-Of-Box Experience - first-time TV setup flow.'),
-    ('ROI', 'Return On Investment.'),
     ('SVoD', 'Subscription Video On Demand.'),
     ('TDT', 'Television Digital Terrestre - Spain free-to-air system.'),
     ('UD', 'Unique Devices.'),
@@ -693,7 +691,6 @@ st.markdown(f"""
 </details>
 """, unsafe_allow_html=True)
 
-# Key Metrics
 met_rows = ""
 for met, defn in [
     ('App Access', 'Total app launches. 1 device x 10 opens = 10 App Access.'),
@@ -718,7 +715,6 @@ st.markdown(f"""
 </details>
 """, unsafe_allow_html=True)
 
-# Industry Terms
 term_rows = ""
 for term, defn in [
     ('Launcher Placement', 'Paid agreement to pre-install an app on the Launcher Bar by default.'),
