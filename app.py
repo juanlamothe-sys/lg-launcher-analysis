@@ -1,6 +1,6 @@
 import streamlit as st
-import plotly.express as px
 import plotly.graph_objects as go
+import plotly.express as px
 import pandas as pd
 import numpy as np
 
@@ -8,45 +8,11 @@ import numpy as np
 # PAGE CONFIG
 # ============================================================
 st.set_page_config(
-    page_title="LG Launcher Placement Analysis - Spain",
+    page_title="LG Launcher Placement — Spain",
     page_icon="📺",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
-
-# ============================================================
-# CUSTOM CSS
-# ============================================================
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.2rem; font-weight: 700; color: #A50034;
-        text-align: center; margin-bottom: 0.2rem;
-    }
-    .sub-header {
-        font-size: 1.1rem; color: #666; text-align: center; margin-bottom: 2rem;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #A50034 0%, #D4004B 100%);
-        padding: 1.2rem; border-radius: 12px; color: white; text-align: center;
-        box-shadow: 0 4px 15px rgba(165,0,52,0.3);
-    }
-    .metric-card h2 { font-size: 2rem; margin: 0; }
-    .metric-card p { font-size: 0.85rem; margin: 0.3rem 0 0 0; opacity: 0.9; }
-    .highlight-box {
-        background: #FFF3F5; border-left: 4px solid #A50034;
-        padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0;
-    }
-    .green-box {
-        background: #F0FFF4; border-left: 4px solid #2D8A4E;
-        padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0;
-    }
-    div[data-testid="stMetric"] {
-        background-color: #F8F9FA; padding: 1rem; border-radius: 10px;
-        border: 1px solid #E9ECEF;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # ============================================================
 # DATA
@@ -69,7 +35,6 @@ UD_LAUNCHER = [71.3, 62.7, 51.0, 95.5, 95.0]
 UD_GIP = [67.7, 3.9, 0.1, 0.0, 0.0]
 UD_HOME = [0.0, 4.8, 2.3, 0.0, 0.0]
 UD_OTHER = [1.0, 2.5, 1.5, 4.5, 5.0]
-
 UD_LAUNCHER_JAN = [1_973_203, 1_213_952, 695_481, 215_299, 181_738]
 
 LG_PEN = [u / LG_BASE * 100 for u in APP_UD_TOTAL]
@@ -78,534 +43,661 @@ CAP_IDX = [LG_PEN[i] / MKT_PEN[i] for i in range(5)]
 AVG_WITH = np.mean(CAP_IDX[:3])
 AVG_WITHOUT = np.mean(CAP_IDX[3:])
 
-COLORS = {
-    'placed': '#2D8A4E', 'not_placed': '#C0392B', 'lg_red': '#A50034',
+C = {
+    'placed': '#2D8A4E', 'not_placed': '#C0392B', 'lg': '#A50034',
     'remote': '#FF6B6B', 'launcher': '#4ECDC4', 'gip': '#45B7D1',
-    'home': '#FFA07A', 'other': '#C0C0C0'
+    'home': '#FFA07A', 'other': '#C0C0C0', 'dark': '#1a1a2e',
+    'gold': '#F39C12', 'blue': '#3498DB', 'purple': '#9B59B6'
 }
 
 # ============================================================
-# SIDEBAR
+# CSS
 # ============================================================
-with st.sidebar:
-    st.markdown("### 📺 Launcher Placement Analysis")
-    st.markdown("**Spain | Jan-May 2026**")
-    st.markdown("---")
-    section = st.radio("Navigate to:", [
-        "🏠 Executive Summary",
-        "🌍 Market Context",
-        "📊 Channel Mix Analysis",
-        "🎯 Capture Index",
-        "📈 Impact Projection",
-        "💰 Valuation & Pricing",
-        "🤝 Negotiation Strategy",
-        "📖 Glossary"
-    ])
-    st.markdown("---")
-    st.caption("LG Electronics Spain\nMarketing & Media Dept.\nJune 2026 | Confidential")
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+html, body, [class*="st-"] { font-family: 'Inter', sans-serif; }
+
+.hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 3rem 2rem; border-radius: 20px; text-align: center;
+    margin-bottom: 2rem; position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(165,0,52,0.15) 0%, transparent 50%);
+}
+.hero h1 {
+    color: white; font-size: 2.8rem; font-weight: 800;
+    margin: 0; line-height: 1.2; position: relative;
+}
+.hero .accent { color: #FF6B6B; }
+.hero p {
+    color: rgba(255,255,255,0.7); font-size: 1.1rem;
+    margin-top: 1rem; position: relative;
+}
+.hero .tag {
+    display: inline-block; background: rgba(165,0,52,0.3);
+    color: #FF6B6B; padding: 0.3rem 1rem; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 600; margin-top: 1rem;
+    position: relative; border: 1px solid rgba(165,0,52,0.5);
+}
+
+.kpi-row { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.kpi {
+    flex: 1; min-width: 150px; padding: 1.5rem; border-radius: 16px;
+    text-align: center; position: relative; overflow: hidden;
+}
+.kpi-red {
+    background: linear-gradient(135deg, #A50034, #D4004B);
+    color: white; box-shadow: 0 8px 25px rgba(165,0,52,0.3);
+}
+.kpi-dark {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: white; box-shadow: 0 8px 25px rgba(26,26,46,0.3);
+}
+.kpi-green {
+    background: linear-gradient(135deg, #2D8A4E, #27ae60);
+    color: white; box-shadow: 0 8px 25px rgba(45,138,78,0.3);
+}
+.kpi-gold {
+    background: linear-gradient(135deg, #F39C12, #e67e22);
+    color: white; box-shadow: 0 8px 25px rgba(243,156,18,0.3);
+}
+.kpi .number { font-size: 2.2rem; font-weight: 800; margin: 0; }
+.kpi .label { font-size: 0.8rem; opacity: 0.85; margin-top: 0.3rem; }
+
+.chapter {
+    margin: 3rem 0 1rem 0; padding-bottom: 0.5rem;
+    border-bottom: 3px solid #A50034;
+}
+.chapter h2 {
+    font-size: 1.8rem; font-weight: 700; color: #1a1a2e; margin: 0;
+}
+.chapter .num {
+    color: #A50034; font-size: 0.9rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 2px;
+}
+
+.insight-card {
+    background: #f8f9fa; border-radius: 16px; padding: 1.5rem;
+    margin: 1rem 0; border-left: 5px solid #A50034;
+    transition: transform 0.2s;
+}
+.insight-card:hover { transform: translateX(5px); }
+.insight-card h4 { color: #A50034; margin: 0 0 0.5rem 0; font-size: 1rem; }
+.insight-card p { color: #444; margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+.verdict {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    padding: 2rem; border-radius: 16px; color: white;
+    text-align: center; margin: 2rem 0;
+}
+.verdict h3 { font-size: 1.5rem; margin: 0 0 0.5rem 0; }
+.verdict .big { font-size: 3rem; font-weight: 800; color: #FF6B6B; }
+.verdict p { opacity: 0.8; margin-top: 0.5rem; }
+
+.quote-box {
+    background: #FFF3F5; border-left: 5px solid #A50034;
+    padding: 1.2rem 1.5rem; border-radius: 0 12px 12px 0;
+    margin: 1.5rem 0; font-style: italic; color: #333;
+}
+
+.cta-box {
+    background: linear-gradient(135deg, #2D8A4E, #27ae60);
+    padding: 1.5rem 2rem; border-radius: 16px; color: white;
+    text-align: center; margin: 1.5rem 0;
+    box-shadow: 0 8px 25px rgba(45,138,78,0.3);
+}
+.cta-box h3 { margin: 0; font-size: 1.3rem; }
+.cta-box p { margin: 0.5rem 0 0 0; opacity: 0.9; }
+
+.vs-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border-radius: 12px; overflow: hidden; margin: 1rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.vs-table th {
+    background: #1a1a2e; color: white; padding: 0.8rem 1rem;
+    font-size: 0.85rem; text-align: center;
+}
+.vs-table td {
+    padding: 0.7rem 1rem; text-align: center; border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+.vs-table tr:nth-child(even) { background: #f8f9fa; }
+.vs-table .good { color: #2D8A4E; font-weight: 700; }
+.vs-table .bad { color: #C0392B; font-weight: 700; }
+
+.timeline-item {
+    display: flex; gap: 1rem; margin: 1rem 0; align-items: flex-start;
+}
+.timeline-dot {
+    min-width: 40px; height: 40px; border-radius: 50%;
+    background: #A50034; color: white; display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+}
+.timeline-content {
+    background: #f8f9fa; padding: 1rem 1.2rem; border-radius: 12px; flex: 1;
+}
+.timeline-content strong { color: #1a1a2e; }
+.timeline-content p { color: #555; margin: 0.3rem 0 0 0; font-size: 0.9rem; }
+
+div[data-testid="stMetric"] {
+    background-color: #F8F9FA; padding: 1rem; border-radius: 12px;
+    border: 1px solid #E9ECEF;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ============================================================
-# EXECUTIVE SUMMARY
+# HERO
 # ============================================================
-if section == "🏠 Executive Summary":
-    st.markdown('<p class="main-header">Strategic Analysis: Launcher Placement Value</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">LG Smart TVs — Spain | January-May 2026</p>', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero">
+    <div class="tag">LG ELECTRONICS SPAIN &bull; CONFIDENTIAL &bull; JUNE 2026</div>
+    <h1>What happens when your app<br><span class="accent">isn't on the Launcher?</span></h1>
+    <p>A data-driven analysis of Launcher Placement impact on LG Smart TVs in Spain.<br>
+    5 apps. 5.38 million TVs. One clear conclusion.</p>
+</div>
+""", unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("""<div class="metric-card"><h2>3.1x</h2><p>Placement Multiplier<br>(brand-adjusted)</p></div>""", unsafe_allow_html=True)
-    with col2:
-        st.markdown("""<div class="metric-card"><h2>-56%</h2><p>Lost Potential<br>(non-placed apps)</p></div>""", unsafe_allow_html=True)
-    with col3:
-        st.markdown("""<div class="metric-card"><h2>€70K-190K</h2><p>Recommended Price<br>(Spain-adjusted)</p></div>""", unsafe_allow_html=True)
-    with col4:
-        st.markdown("""<div class="metric-card"><h2>9:1 ROI</h2><p>Partner Return<br>(at target price)</p></div>""", unsafe_allow_html=True)
+# KPI row
+st.markdown("""
+<div class="kpi-row">
+    <div class="kpi kpi-red">
+        <div class="number">3.1x</div>
+        <div class="label">Placement Multiplier<br>(brand-adjusted)</div>
+    </div>
+    <div class="kpi kpi-dark">
+        <div class="number">-56%</div>
+        <div class="label">Potential Lost<br>by non-placed apps</div>
+    </div>
+    <div class="kpi kpi-green">
+        <div class="number">9:1</div>
+        <div class="label">Partner ROI<br>at target price</div>
+    </div>
+    <div class="kpi kpi-gold">
+        <div class="number">€70K-190K</div>
+        <div class="label">Recommended Price<br>(Spain-adjusted)</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.subheader("Key Findings")
+# ============================================================
+# CHAPTER 1: THE LANDSCAPE
+# ============================================================
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 1</span>
+    <h2>The Landscape: 5.38M LG TVs, One Question</h2>
+</div>
+""", unsafe_allow_html=True)
 
-    findings = {
-        "🔄 3.1x Multiplier": "Even after removing the brand effect, placement multiplies an app's presence on LG TVs by 3.1x (Capture Index: 1.34 with vs. 0.43 without).",
-        "📉 Lost Potential": "Mediaset Infinity loses 54% and Atresplayer loses 59% of their potential presence on LG TVs solely due to lack of placement.",
-        "🔀 Channel Diversification": "Placed apps access 4-5 traffic channels; non-placed apps depend 93%+ on a single channel (organic Launcher).",
-        "📈 Growth Projection": "With placement, Mediaset could grow from ~226K to ~468K-627K unique devices (+107% to +177%).",
-        "💰 Fair Price": "€70K-190K/year for local partners (25% Spain market discount), compared to €300K-400K paid by global platforms."
-    }
-    for title, desc in findings.items():
-        with st.expander(title):
+col1, col2 = st.columns([1.2, 1])
+with col1:
+    st.markdown("""
+    Spain has **5.38 million active LG Smart TVs** — and streaming is the dominant use case.
+    HDMI usage has dropped 43% since 2016 as viewers migrate to apps.
+
+    But not all apps are equal on the home screen. **Three global players** pay €300K-400K/year
+    for a guaranteed spot on the Launcher Bar. **Two local broadcasters** — with millions of
+    Spanish users — don't.
+
+    The question is: **how much does that matter?**
+    """)
+with col2:
+    st.markdown("""
+    <table class="vs-table">
+        <tr><th>Platform</th><th>Users Spain</th><th>Placement</th></tr>
+        <tr><td>Netflix</td><td>14.0M</td><td class="good">✅ Yes</td></tr>
+        <tr><td>Prime Video</td><td>12.6M</td><td class="good">✅ Yes</td></tr>
+        <tr><td>Disney+</td><td>6.6M</td><td class="good">✅ Yes</td></tr>
+        <tr><td>Mediaset Infinity</td><td>3.4M</td><td class="bad">❌ No</td></tr>
+        <tr><td>Atresplayer</td><td>3.6M</td><td class="bad">❌ No</td></tr>
+    </table>
+    """, unsafe_allow_html=True)
+
+# ============================================================
+# CHAPTER 2: THE EVIDENCE
+# ============================================================
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 2</span>
+    <h2>The Evidence: How Users Actually Access Apps</h2>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("#### Where do app launches come from?")
+st.markdown("When an app has placement, users access it through **multiple doors**. Without it, there's only **one way in**.")
+
+fig = go.Figure()
+for name, data, color in [
+    ('Remote Hot Key', AA_REMOTE, C['remote']),
+    ('Launcher', AA_LAUNCHER, C['launcher']),
+    ('GIP', AA_GIP, C['gip']),
+    ('Home Reco', AA_HOME, C['home']),
+    ('Other', AA_OTHER, C['other'])
+]:
+    fig.add_trace(go.Bar(
+        y=APPS, x=data, name=name, orientation='h', marker_color=color,
+        text=[f'{v:.1f}%' if v > 2 else '' for v in data],
+        textposition='inside', textfont=dict(color='white', size=11)
+    ))
+fig.update_layout(
+    barmode='stack', height=380,
+    margin=dict(l=0, r=0, t=10, b=0),
+    xaxis_title='% of Total App Access (Avg. Jan-May 2026)',
+    legend=dict(orientation='h', y=-0.18, x=0.5, xanchor='center'),
+    yaxis=dict(autorange='reversed'),
+    plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+)
+st.plotly_chart(fig, use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("""
+    <div class="insight-card">
+        <h4>🔑 Apps WITH Placement</h4>
+        <p>Diversify across <strong>3-5 channels</strong>: Remote Hot Key (~38-44%),
+        Launcher (~26-46%), GIP (up to 33%), Home Recommendations, and DIAL.</p>
+    </div>
+    """, unsafe_allow_html=True)
+with col2:
+    st.markdown("""
+    <div class="insight-card">
+        <h4>🔒 Apps WITHOUT Placement</h4>
+        <p>Depend <strong>93%+</strong> on a single channel: the Launcher. No hot key,
+        no GIP, no recommendations. The user must <strong>actively find and install</strong> the app.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("#### But couldn't this just be because Netflix is... Netflix?")
+st.markdown("""
+<div class="quote-box">
+    "Of course Netflix has more users — it's the biggest streaming brand in the world.
+    The real question is: <strong>if we remove the brand effect, does placement still matter?</strong>"
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================
+# CHAPTER 3: THE INSIGHT
+# ============================================================
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 3</span>
+    <h2>The Insight: Removing the Brand Bias</h2>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+To isolate the **placement effect** from the **brand effect**, we created the **Capture Index**:
+""")
+
+st.markdown("""
+<div class="verdict">
+    <h3>Capture Index</h3>
+    <p>LG TV Penetration (%) ÷ Market Penetration (%)</p>
+    <p style="font-size:0.85rem; margin-top:1rem;">
+    Index = 1.0 → App performs on LG exactly as its market share predicts<br>
+    Index > 1.0 → Placement <strong>amplifies</strong> the app beyond its natural weight<br>
+    Index < 1.0 → The app <strong>loses</strong> presence on LG TVs
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# Capture Index chart
+bar_colors = [C['placed'] if c >= 1 else C['not_placed'] for c in CAP_IDX]
+fig = go.Figure()
+fig.add_trace(go.Bar(
+    y=APPS, x=CAP_IDX, orientation='h', marker_color=bar_colors,
+    text=[f'{c:.2f}  ({"+" if c >= 1 else ""}{(c-1)*100:.0f}%)' for c in CAP_IDX],
+    textposition='outside', textfont=dict(size=13, color=bar_colors)
+))
+fig.add_vline(x=1.0, line_dash="dash", line_color="#999", line_width=2,
+              annotation_text="Par (1.0)", annotation_font_color="#999")
+fig.update_layout(
+    height=380, margin=dict(l=0, r=160, t=10, b=0),
+    xaxis=dict(title='Capture Index', range=[0, 2.0], gridcolor='#eee'),
+    yaxis=dict(autorange='reversed'),
+    plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+)
+st.plotly_chart(fig, use_container_width=True)
+
+# Verdict
+st.markdown(f"""
+<div class="verdict">
+    <h3>The Verdict</h3>
+    <div class="big">{AVG_WITH/AVG_WITHOUT:.1f}x</div>
+    <p>Even after removing brand bias, placement multiplies app presence by <strong>3.1x</strong><br>
+    Avg. WITH Placement: <strong>{AVG_WITH:.2f}</strong> | Avg. WITHOUT: <strong>{AVG_WITHOUT:.2f}</strong></p>
+</div>
+""", unsafe_allow_html=True)
+
+# Penetration comparison
+st.markdown("#### The gap visualised: Market Share vs. LG Presence")
+apps_short = ['Netflix', 'Prime\nVideo', 'Disney+', 'Mediaset\nInfinity', 'Atresplayer']
+fig2 = go.Figure()
+fig2.add_trace(go.Bar(
+    x=apps_short, y=MKT_PEN, name='Market Penetration',
+    marker_color=C['blue'], text=[f'{v:.1f}%' for v in MKT_PEN],
+    textposition='outside', textfont=dict(size=11)
+))
+fig2.add_trace(go.Bar(
+    x=apps_short, y=LG_PEN, name='LG TV Penetration',
+    marker_color='#E67E22', text=[f'{v:.1f}%' for v in LG_PEN],
+    textposition='outside', textfont=dict(size=11)
+))
+fig2.update_layout(
+    barmode='group', height=400,
+    margin=dict(l=0, r=0, t=10, b=0),
+    yaxis_title='Penetration (%)',
+    legend=dict(orientation='h', y=1.08, x=0.5, xanchor='center'),
+    plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+)
+fig2.add_annotation(
+    x=3, y=max(MKT_PEN[3], LG_PEN[3]) + 5,
+    text="Gap = lost<br>potential", showarrow=True,
+    arrowhead=2, arrowcolor=C['not_placed'], font=dict(color=C['not_placed'], size=11)
+)
+st.plotly_chart(fig2, use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("""
+    <div class="insight-card">
+        <h4>📺 Mediaset Infinity</h4>
+        <p><strong>3.4M users</strong> in Spain (8.7% market penetration),
+        but only <strong>4.2%</strong> of LG TVs. Losing <strong>54%</strong> of its potential.</p>
+    </div>
+    """, unsafe_allow_html=True)
+with col2:
+    st.markdown("""
+    <div class="insight-card">
+        <h4>📺 Atresplayer</h4>
+        <p><strong>3.6M users</strong> in Spain (9.2% market penetration),
+        but only <strong>3.6%</strong> of LG TVs. Losing <strong>59%</strong> of its potential.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ============================================================
+# CHAPTER 4: THE OPPORTUNITY
+# ============================================================
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 4</span>
+    <h2>The Opportunity: What Placement Would Unlock</h2>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("If local partners achieved the same Capture Index as placed apps, here's what would happen:")
+
+for app_name, cur, con, opt, emoji in [
+    ('Mediaset Infinity', 226_400, 468_060, 627_200, '🟠'),
+    ('Atresplayer', 192_300, 494_960, 663_046, '🔵')
+]:
+    st.markdown(f"#### {emoji} {app_name}")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Current", f"{cur:,.0f}", "No Placement", delta_color="off")
+    col2.metric("Conservative", f"{con:,.0f}", f"+{con-cur:,.0f} (+{(con-cur)/cur*100:.0f}%)")
+    col3.metric("Optimistic", f"{opt:,.0f}", f"+{opt-cur:,.0f} (+{(opt-cur)/cur*100:.0f}%)")
+
+# Projection chart
+fig = go.Figure()
+apps_l = ['Mediaset Infinity', 'Atresplayer']
+for j, (sc, vals, color) in enumerate([
+    ('Current', [226400, 192300], C['not_placed']),
+    ('Conservative (Index=1.0)', [468060, 494960], C['gold']),
+    ('Optimistic (Index=1.34)', [627200, 663046], C['placed'])
+]):
+    fig.add_trace(go.Bar(
+        y=apps_l, x=vals, name=sc, orientation='h', marker_color=color,
+        text=[f'{v:,.0f}' for v in vals], textposition='outside',
+        textfont=dict(size=12)
+    ))
+fig.update_layout(
+    barmode='group', height=300,
+    margin=dict(l=0, r=140, t=10, b=0),
+    xaxis_title='Unique Devices (App UD)',
+    yaxis=dict(autorange='reversed'),
+    legend=dict(orientation='h', y=-0.25, x=0.5, xanchor='center'),
+    plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+)
+st.plotly_chart(fig, use_container_width=True)
+
+# ============================================================
+# CHAPTER 5: THE PRICE
+# ============================================================
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 5</span>
+    <h2>The Price: What's Fair for Spain?</h2>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+Global platforms pay **€300K-400K/year**. But Spain is not the UK or the US.
+We applied **4 valuation methods** and a **25% Spain market discount**.
+""")
+
+tab1, tab2 = st.tabs(["📊 Valuation Methods", "🇪🇸 Why the Discount?"])
+
+with tab1:
+    methods_data = [
+        ("Cost per Incremental Device", 46, 76, C['blue'],
+         "€350K / 1.88M incremental = €0.19/device → applied to +242K"),
+        ("Ad Revenue Value (AVOD)", 140, 210, C['placed'],
+         "23.2M incremental sessions × €20 CPM = €1.4M → fee = 10-15%"),
+        ("Premium Sub Conversion", 140, 210, C['purple'],
+         "24.2K new subs × €3.99 × 12 = €1.16M → fee = 12-18%"),
+        ("Market Proportionality", 85, 120, '#E67E22',
+         "3.4M users × €0.025/user × 1.35 local adj = ~€115K")
+    ]
+    fig = go.Figure()
+    for name, lo, hi, color, _ in methods_data:
+        fig.add_trace(go.Bar(
+            y=[name], x=[hi - lo], base=[lo], orientation='h',
+            marker_color=color, showlegend=False,
+            text=f'€{lo}K – €{hi}K', textposition='inside',
+            textfont=dict(color='white', size=12)
+        ))
+    fig.add_vrect(x0=70, x1=190, fillcolor=C['lg'], opacity=0.07, line_width=0)
+    fig.add_vline(x=70, line_dash="dot", line_color=C['lg'], line_width=1)
+    fig.add_vline(x=190, line_dash="dot", line_color=C['lg'], line_width=1)
+    fig.add_annotation(x=130, y=-0.4, text="Recommended range: €70K–€190K",
+                       showarrow=False, font=dict(color=C['lg'], size=12, weight=700))
+    fig.update_layout(
+        height=280, margin=dict(l=0, r=0, t=10, b=40),
+        xaxis=dict(title='€K / year', range=[0, 260]),
+        yaxis=dict(autorange='reversed'),
+        plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    for name, lo, hi, _, desc in methods_data:
+        with st.expander(f"**{name}** → €{lo}K–€{hi}K"):
             st.write(desc)
 
-    st.markdown("---")
-    st.subheader("Apps Analysed")
-    df_apps = pd.DataFrame({
-        'App': APPS,
-        'Placement': ['Yes' if p else 'No' for p in PLACEMENT],
-        'Users Spain': [f'{u/1e6:.1f}M' for u in MARKET_USERS],
-        'App UD (Jan 2026)': [f'{u:,.0f}' for u in APP_UD_TOTAL],
-        'Capture Index': [f'{c:.2f}' for c in CAP_IDX]
-    })
-    st.dataframe(df_apps, use_container_width=True, hide_index=True)
+with tab2:
+    st.markdown("""
+    <table class="vs-table">
+        <tr><th>Factor</th><th>Spain 🇪🇸</th><th>UK 🇬🇧</th><th>US 🇺🇸</th></tr>
+        <tr><td>Pay-TV Penetration</td><td class="bad">&lt;45%</td><td>~65%</td><td>~85%</td></tr>
+        <tr><td>AVOD/FAST Weekly Reach</td><td><strong>75%</strong> (#1 in EU)</td><td>~45%</td><td>~50%</td></tr>
+        <tr><td>SVoD ARPU</td><td class="bad">~€8.2/month</td><td>~€11-12</td><td>~€13-15</td></tr>
+        <tr><td>Telco Bundle Dependency</td><td class="bad">41.3%</td><td>~25%</td><td>~15%</td></tr>
+        <tr><td>Password Sharing</td><td>13.2%</td><td>~10%</td><td>~8%</td></tr>
+        <tr><td>Local Partner Model</td><td>AVOD + €3-4 premium</td><td colspan="2">SVoD €8-16/month</td></tr>
+    </table>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <div class="quote-box">
+        <strong>Conclusion:</strong> Lower pay-TV adoption, AVOD dominance, lower ARPU, and bundle dependency
+        justify a <strong>25% discount</strong> vs. raw valuation — and <strong>50-70% discount</strong> vs. global pricing.
+    </div>
+    """, unsafe_allow_html=True)
+
+# Pricing tiers
+st.markdown("#### Recommended Pricing Tiers")
+st.markdown("""
+<table class="vs-table">
+    <tr><th>Tier</th><th>Includes</th><th>Price/Year</th><th>Rationale</th></tr>
+    <tr>
+        <td><strong>🟢 Entry</strong></td><td>Launcher only</td>
+        <td class="good"><strong>€70K–€110K</strong></td>
+        <td>1st year proof of concept. Trigger competitive dynamics.</td>
+    </tr>
+    <tr>
+        <td><strong>🔵 Target</strong></td><td>Launcher</td>
+        <td><strong>€110K–€150K</strong></td>
+        <td>Fee = 8-11% of incremental ad revenue (€1.4M+).</td>
+    </tr>
+    <tr>
+        <td><strong>🟣 Premium</strong></td><td>Launcher + OOBE + Home Reco + Banner</td>
+        <td><strong>€150K–€190K</strong></td>
+        <td>Maximum visibility at ~50% of global price.</td>
+    </tr>
+    <tr>
+        <td>⚫ Ref: Global</td><td>Full package</td>
+        <td>€300K–€400K</td>
+        <td>What Netflix/Disney+/Prime pay. Ceiling.</td>
+    </tr>
+</table>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="cta-box">
+    <h3>💰 Partner ROI: Even at €150K/year → incremental ad revenue of €1.4M+ → ROI = 9:1</h3>
+    <p>The Launcher Placement pays for itself nearly 10 times over.</p>
+</div>
+""", unsafe_allow_html=True)
 
 # ============================================================
-# MARKET CONTEXT
+# CHAPTER 6: THE STRATEGY
 # ============================================================
-elif section == "🌍 Market Context":
-    st.header("🌍 Spanish Streaming Market Context")
+st.markdown("""
+<div class="chapter">
+    <span class="num">Chapter 6</span>
+    <h2>The Strategy: How to Close the Deal</h2>
+</div>
+""", unsafe_allow_html=True)
 
-    tab1, tab2, tab3 = st.tabs(["📺 LG TV Base", "🎬 Streaming Landscape", "🇪🇸 Spain vs Anglo-Saxon"])
+st.markdown("#### The Domino Effect")
+st.markdown("""
+Mediaset (Telecinco, Cuatro) and Atresmedia (Antena 3, La Sexta) compete for the **same audience**.
+If one gets placement, the other faces an **immediate, measurable disadvantage**.
+Present to both simultaneously. The **first mover** wins.
+""")
 
-    with tab1:
-        col1, col2, col3 = st.columns(3)
-        col1.metric("LG TVs in Spain", "5.38M", "Active Smart TVs")
-        col2.metric("Smart TV Penetration", "64%", "14x growth since 2013")
-        col3.metric("HDMI Usage Decline", "-43%", "EU5 since 2016")
-        st.info("📊 Source: LG Ad Solutions, February 2025")
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("""
+    <div class="insight-card" style="border-left-color: #E67E22;">
+        <h4 style="color: #E67E22;">📺 Pitch to Mediaset Infinity</h4>
+        <p>
+        • <strong>+23% YoY</strong> growth in digital users<br>
+        • 3.4M users → only <strong>4.2%</strong> LG penetration (losing 54%)<br>
+        • FIFA Club World Cup rights → maximize reach<br>
+        • <strong>ROI 9:1</strong> at €150K<br>
+        • ⚠️ If Atresplayer signs first, you lose ground permanently
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+with col2:
+    st.markdown("""
+    <div class="insight-card" style="border-left-color: #3498DB;">
+        <h4 style="color: #3498DB;">📺 Pitch to Atresplayer</h4>
+        <p>
+        • Best visitors since May 2024 (<strong>3.2M, +20% YoY</strong>)<br>
+        • 3.6M users → only <strong>3.6%</strong> LG penetration (losing 59%)<br>
+        • Most national premieres of any platform<br>
+        • <strong>ROI 8-10:1</strong> at €110-150K<br>
+        • ⚠️ If Mediaset enters Launcher, you lose share
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with tab2:
-        st.metric("Paid Streaming Households", "63.1%", "of internet households (CNMC Q2 2025)")
-        df_mkt = pd.DataFrame({
-            'Platform': APPS,
-            'Users Spain': [f'{u/1e6:.1f}M' for u in MARKET_USERS],
-            'Market Share (JustWatch Q4 2025)': ['23%', '18%', '17%', '2%', '<2%'],
-            'LG Placement': ['Yes' if p else 'No' for p in PLACEMENT],
-            'Hot Key': ['Yes' if p else 'No' for p in PLACEMENT]
-        })
-        st.dataframe(df_mkt, use_container_width=True, hide_index=True)
-
-    with tab3:
-        st.subheader("Why a 25% Spain Market Discount is Justified")
-        comparison = pd.DataFrame({
-            'Factor': ['Pay-TV Penetration', 'FAST/AVoD Weekly Reach', 'SVoD ARPU (monthly)',
-                       'Bundle Dependency', 'Password Sharing', 'Local Partner Model'],
-            'Spain': ['<45%', '75% (highest in EU)', '~€8.2/month',
-                      '41.3% via telco bundles', '13.2%', 'AVOD/Free + €3-4 premium'],
-            'UK': ['~65%', '~45%', '~€11-12/month', '~25%', '~10%', 'SVoD €8-16/month'],
-            'US': ['~85%', '~50%', '~€13-15/month', '~15%', '~8%', 'SVoD €10-18/month']
-        })
-        st.dataframe(comparison, use_container_width=True, hide_index=True)
-        st.markdown("""
-        <div class="highlight-box">
-            <strong>Conclusion:</strong> A 25% discount vs. raw valuation (and 50-70% discount vs. global app pricing)
-            is appropriate for local Spanish partners given the structural differences in the market.
+st.markdown("#### Timeline")
+timeline = [
+    ("Jun", "June 2026", "Send formal proposal to both partners with this analysis."),
+    ("Jul", "July 2026", "Negotiation meetings. Present weighted data & growth scenarios."),
+    ("Aug", "August 2026", "Close at least one deal before LaLiga and fall content season."),
+    ("Q4", "Q4 2026", "Measure results vs. projections. Build success case for partner #2."),
+    ("Q1", "Q1 2027", "Both partners placed. Renegotiate upward. Target DAZN, Movistar+ next.")
+]
+for dot, title, desc in timeline:
+    st.markdown(f"""
+    <div class="timeline-item">
+        <div class="timeline-dot">{dot}</div>
+        <div class="timeline-content">
+            <strong>{title}</strong>
+            <p>{desc}</p>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
 # ============================================================
-# CHANNEL MIX ANALYSIS
+# GLOSSARY (expandable)
 # ============================================================
-elif section == "📊 Channel Mix Analysis":
-    st.header("📊 Channel Mix Analysis")
+st.markdown("""
+<div class="chapter">
+    <span class="num">Reference</span>
+    <h2>📖 Glossary & Definitions</h2>
+</div>
+""", unsafe_allow_html=True)
 
-    tab1, tab2, tab3 = st.tabs(["App Access %", "App UD %", "Absolute Reach"])
+with st.expander("🔤 Acronyms & Abbreviations"):
+    acronyms = {
+        'ARPU': 'Average Revenue Per User.', 'AVOD': 'Advertising-based Video On Demand — free streaming funded by ads.',
+        'CPM': 'Cost Per Mille — cost per 1,000 ad impressions.', 'CTV': 'Connected TV — internet-connected television.',
+        'DIAL': 'Discovery and Launch — protocol for casting from phone to TV.',
+        'FAST': 'Free Ad-Supported Streaming TV.', 'GIP': 'Global Input Priority — auto-launches last-used app on power-on.',
+        'OOBE': 'Out-Of-Box Experience — first-time TV setup flow.', 'ROI': 'Return On Investment.',
+        'SVoD': 'Subscription Video On Demand.', 'TDT': "Television Digital Terrestre — Spain's free-to-air system.",
+        'UD': 'Unique Devices.', 'webOS': "LG's Smart TV operating system.", 'YoY': 'Year-over-Year comparison.'
+    }
+    st.dataframe(pd.DataFrame({'Acronym': acronyms.keys(), 'Definition': acronyms.values()}),
+                 use_container_width=True, hide_index=True)
 
-    with tab1:
-        st.subheader("App Access — Channel Distribution (Avg. Jan-May 2026)")
-        fig = go.Figure()
-        channels_data = [
-            ('Remote Hot Key', AA_REMOTE, COLORS['remote']),
-            ('Launcher', AA_LAUNCHER, COLORS['launcher']),
-            ('GIP', AA_GIP, COLORS['gip']),
-            ('Home Reco', AA_HOME, COLORS['home']),
-            ('Other', AA_OTHER, COLORS['other'])
-        ]
-        for name, data, color in channels_data:
-            fig.add_trace(go.Bar(
-                y=APPS, x=data, name=name, orientation='h',
-                marker_color=color,
-                text=[f'{v:.1f}%' if v > 2 else '' for v in data],
-                textposition='inside', textfont=dict(color='white', size=11)
-            ))
-        fig.update_layout(
-            barmode='stack', height=400, margin=dict(l=0, r=0, t=30, b=0),
-            xaxis_title='% of Total App Access',
-            legend=dict(orientation='h', y=-0.15),
-            yaxis=dict(autorange='reversed')
-        )
-        st.plotly_chart(fig, use_container_width=True)
+with st.expander("📏 Key Metrics"):
+    metrics = {
+        'App Access': 'Total app launches. 1 device × 10 opens = 10 App Access.',
+        'App UD': 'Unique devices that launched an app. 1 device × 10 opens = 1 UD.',
+        'Capture Index': 'LG Penetration ÷ Market Penetration. >1.0 = over-performance.',
+        'Remote Hot Key': 'Dedicated physical button on remote for an app.',
+        'Launcher': 'Horizontal app strip on webOS home screen.',
+        'GIP': 'Auto-launch of last-used app on TV power-on.',
+        'Home Reco': 'Recommended content cards on home screen shelves.',
+        'DIAL': 'App launch from phone/tablet to TV.',
+        'Incremental Devices': 'Projected UD with placement minus current UD.'
+    }
+    st.dataframe(pd.DataFrame({'Metric': metrics.keys(), 'Definition': metrics.values()}),
+                 use_container_width=True, hide_index=True)
 
-        st.markdown("""
-        **Key Observations:**
-        - Non-placed apps depend **93%+** on Launcher as their sole access channel
-        - Placed apps diversify across **3-5 channels**: Remote Hot Key (~38-44%), Launcher (~26-46%), GIP (up to 33%)
-        - Search (Text + Voice + Command) accounts for **<1%** of traffic for ALL apps
-        """)
-
-    with tab2:
-        st.subheader("App UD — Unique Devices by Channel (Avg. Jan-May 2026)")
-        channels_ud = {
-            'Remote Hot Key': UD_REMOTE, 'Launcher': UD_LAUNCHER,
-            'GIP': UD_GIP, 'Home Reco': UD_HOME, 'Other': UD_OTHER
-        }
-        color_map = {
-            'Remote Hot Key': COLORS['remote'], 'Launcher': COLORS['launcher'],
-            'GIP': COLORS['gip'], 'Home Reco': COLORS['home'], 'Other': COLORS['other']
-        }
-        rows = []
-        for ch_name, ch_data in channels_ud.items():
-            for i, app in enumerate(APPS):
-                rows.append({'App': app, 'Channel': ch_name, 'Percentage': ch_data[i]})
-        df_ud = pd.DataFrame(rows)
-        fig2 = px.bar(
-            df_ud, y='App', x='Percentage', color='Channel', orientation='h',
-            barmode='group', color_discrete_map=color_map,
-            text=df_ud['Percentage'].apply(lambda x: f'{x:.1f}%' if x > 2 else '')
-        )
-        fig2.update_layout(
-            height=500, margin=dict(l=0, r=0, t=30, b=0),
-            yaxis=dict(autorange='reversed'), xaxis_title='% of Unique Devices',
-            legend=dict(orientation='h', y=-0.15)
-        )
-        st.plotly_chart(fig2, use_container_width=True)
-        st.info("A single device can use multiple channels, so percentages do not sum to 100%.")
-
-    with tab3:
-        st.subheader("Absolute Reach — Unique Devices via Launcher (January 2026)")
-        bar_colors = [COLORS['placed'] if p else COLORS['not_placed'] for p in PLACEMENT]
-        fig3 = go.Figure(go.Bar(
-            y=APPS, x=UD_LAUNCHER_JAN, orientation='h',
-            marker_color=bar_colors,
-            text=[f'{v:,.0f}' for v in UD_LAUNCHER_JAN],
-            textposition='outside', textfont=dict(size=12)
-        ))
-        fig3.update_layout(
-            height=400, margin=dict(l=0, r=120, t=30, b=0),
-            xaxis_title='Unique Devices (App UD)',
-            yaxis=dict(autorange='reversed')
-        )
-        st.plotly_chart(fig3, use_container_width=True)
-        st.markdown("🟢 = With Placement | 🔴 = Without Placement")
-
-# ============================================================
-# CAPTURE INDEX
-# ============================================================
-elif section == "🎯 Capture Index":
-    st.header("🎯 Weighted Analysis: Isolating Placement from Brand Effect")
-
-    with st.expander("📐 Methodology", expanded=True):
-        st.markdown("""
-        **Capture Index** = LG TV Penetration (%) / Market Penetration (%)
-
-        | Concept | Formula |
-        |---|---|
-        | **LG Penetration** | App UD / LG TV Base (5.38M) |
-        | **Market Penetration** | Platform Users / Adult Population (~39M) |
-        | **Index = 1.0** | App captures on LG exactly what its market share predicts |
-        | **Index > 1.0** | Over-performance — placement amplifies presence |
-        | **Index < 1.0** | Under-performance — app loses relative presence |
-        """)
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Avg. WITH Placement", f"{AVG_WITH:.2f}", f"+{(AVG_WITH-1)*100:.0f}%")
-    col2.metric("Avg. WITHOUT Placement", f"{AVG_WITHOUT:.2f}", f"{(AVG_WITHOUT-1)*100:.0f}%")
-    col3.metric("Multiplier", f"{AVG_WITH/AVG_WITHOUT:.1f}x", "Placement effect")
-
-    bar_colors = [COLORS['placed'] if c >= 1 else COLORS['not_placed'] for c in CAP_IDX]
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-        y=APPS, x=CAP_IDX, orientation='h', marker_color=bar_colors,
-        text=[f'{c:.2f} ({"+" if c>=1 else ""}{(c-1)*100:.0f}%)' for c in CAP_IDX],
-        textposition='outside', textfont=dict(size=12)
-    ))
-    fig.add_vline(x=1.0, line_dash="dash", line_color="#333", annotation_text="Par (1.0)")
-    fig.update_layout(
-        height=400, margin=dict(l=0, r=150, t=30, b=0),
-        xaxis_title='Capture Index', xaxis_range=[0, 2.0],
-        yaxis=dict(autorange='reversed')
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-    st.subheader("Market vs. LG TV Penetration")
-    df_pen = pd.DataFrame({
-        'App': APPS * 2,
-        'Penetration (%)': MKT_PEN + LG_PEN,
-        'Type': ['Market Penetration'] * 5 + ['LG TV Penetration'] * 5
-    })
-    fig2 = px.bar(
-        df_pen, y='App', x='Penetration (%)', color='Type', orientation='h', barmode='group',
-        color_discrete_map={'Market Penetration': '#3498DB', 'LG TV Penetration': '#E67E22'},
-        text=df_pen['Penetration (%)'].apply(lambda x: f'{x:.1f}%')
-    )
-    fig2.update_layout(height=400, yaxis=dict(autorange='reversed'), legend=dict(orientation='h', y=-0.15))
-    st.plotly_chart(fig2, use_container_width=True)
-
-    st.subheader("Detailed Results")
-    df_res = pd.DataFrame({
-        'App': APPS,
-        'Placement': ['Yes' if p else 'No' for p in PLACEMENT],
-        'Total App UD': [f'{u:,.0f}' for u in APP_UD_TOTAL],
-        'LG Penetration': [f'{p:.1f}%' for p in LG_PEN],
-        'Users Spain': [f'{u/1e6:.1f}M' for u in MARKET_USERS],
-        'Market Penetration': [f'{p:.1f}%' for p in MKT_PEN],
-        'Capture Index': [f'{c:.2f}' for c in CAP_IDX],
-        'Differential': [f'{"+" if (c-1)*100>0 else ""}{(c-1)*100:.0f}%' for c in CAP_IDX]
-    })
-    st.dataframe(df_res, use_container_width=True, hide_index=True)
-
-# ============================================================
-# IMPACT PROJECTION
-# ============================================================
-elif section == "📈 Impact Projection":
-    st.header("📈 Impact Projection for Local Partners")
-
-    current = {'Mediaset Infinity': 226_400, 'Atresplayer': 192_300}
-    conservative = {'Mediaset Infinity': 468_060, 'Atresplayer': 494_960}
-    optimistic = {'Mediaset Infinity': 627_200, 'Atresplayer': 663_046}
-
-    for app_name in ['Mediaset Infinity', 'Atresplayer']:
-        st.subheader(f"📱 {app_name}")
-        cur = current[app_name]
-        con = conservative[app_name]
-        opt = optimistic[app_name]
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Current (No Placement)", f"{cur:,.0f}", "Baseline")
-        col2.metric("Conservative (Index=1.0)", f"{con:,.0f}", f"+{con-cur:,.0f} (+{(con-cur)/cur*100:.0f}%)")
-        col3.metric("Optimistic (Index=1.34)", f"{opt:,.0f}", f"+{opt-cur:,.0f} (+{(opt-cur)/cur*100:.0f}%)")
-
-    apps_local = ['Mediaset Infinity', 'Atresplayer']
-    scenarios = ['Current', 'Conservative', 'Optimistic']
-    values = [[226400, 468060, 627200], [192300, 494960, 663046]]
-    colors_sc = ['#C0392B', '#F39C12', '#2D8A4E']
-
-    fig = go.Figure()
-    for j, sc in enumerate(scenarios):
-        fig.add_trace(go.Bar(
-            y=apps_local, x=[values[i][j] for i in range(2)],
-            name=sc, orientation='h', marker_color=colors_sc[j],
-            text=[f'{values[i][j]:,.0f}' for i in range(2)],
-            textposition='outside'
-        ))
-    fig.update_layout(
-        barmode='group', height=350, xaxis_title='Unique Devices (App UD)',
-        yaxis=dict(autorange='reversed'), legend=dict(orientation='h', y=-0.2)
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-# ============================================================
-# VALUATION & PRICING
-# ============================================================
-elif section == "💰 Valuation & Pricing":
-    st.header("💰 Launcher Placement Valuation")
-
-    st.info("Global platforms (Netflix, Disney+, Prime Video) pay **€300K-400K/year**. Local partners need adjusted pricing.")
-
-    tab1, tab2, tab3 = st.tabs(["📊 4 Methodologies", "🇪🇸 Spain Discount", "🎯 Recommended Pricing"])
-
-    with tab1:
-        methods = [
-            ("Method 1: Cost per Incremental Device", "€46K - €76K", 46, 76,
-             "Implicit cost: €350K / 1.88M incremental devices = €0.19/device. Applied to Mediaset's +242K incremental."),
-            ("Method 2: Ad Revenue Value (AVOD)", "€140K - €210K", 140, 210,
-             "242K incremental devices x 8 sessions x 12 months x 3.5 ads x €20 CPM = €1.4M. Fee = 10-15%."),
-            ("Method 3: Premium Subscription Conversion", "€140K - €210K", 140, 210,
-             "242K x 10% conversion x €3.99/month x 12 = €1.16M in sub revenue. Fee = 12-18%."),
-            ("Method 4: Market Proportionality", "€85K - €120K", 85, 120,
-             "Global apps: 14M users -> €350K -> €0.025/user. Mediaset 3.4M x €0.025 x 1.35 adj = ~€115K.")
-        ]
-        for name, range_str, lo, hi, explanation in methods:
-            with st.expander(f"**{name}** -> {range_str}/year"):
-                st.write(explanation)
-
-        fig = go.Figure()
-        method_names = [m[0] for m in methods]
-        lows = [m[2] for m in methods]
-        highs = [m[3] for m in methods]
-        colors_m = ['#3498DB', '#2ECC71', '#9B59B6', '#E67E22']
-        for i in range(4):
-            fig.add_trace(go.Bar(
-                y=[method_names[i]], x=[highs[i]-lows[i]], base=[lows[i]],
-                orientation='h', marker_color=colors_m[i], name=method_names[i],
-                text=f'€{lows[i]}K - €{highs[i]}K', textposition='inside',
-                textfont=dict(color='white', size=11), showlegend=False
-            ))
-        fig.update_layout(
-            height=250, xaxis_title='EUR K / year',
-            margin=dict(l=0, r=0, t=10, b=0),
-            yaxis=dict(autorange='reversed')
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-    with tab2:
-        st.subheader("Spain Market Discount: -25%")
-        df_disc = pd.DataFrame({
-            'Methodology': ['Cost per Incremental Device', 'Ad Revenue Value', 'Premium Sub Conversion',
-                           'Market Proportionality', 'Weighted Average'],
-            'Raw Range': ['€46K-€76K', '€140K-€210K', '€140K-€210K', '€85K-€120K', '€103K-€154K'],
-            'After 25% Discount': ['€35K-€57K', '€105K-€158K', '€105K-€158K', '€64K-€90K', '€77K-€116K']
-        })
-        st.dataframe(df_disc, use_container_width=True, hide_index=True)
-
-        st.markdown("""
-        **Discount justification:**
-        - Pay-TV penetration: Spain <45% vs UK ~65%, US ~85%
-        - AVOD dominance: 75% consume free content weekly (highest in EU)
-        - SVoD ARPU: ~€8.2/month vs UK ~€11-12, US ~€13-15
-        - Bundle dependency: 41.3% via telco bundles
-        - Local partner model: AVOD/freemium, not premium SVoD
-        """)
-
-    with tab3:
-        st.subheader("Recommended Pricing Range (Spain-Adjusted)")
-        df_price = pd.DataFrame({
-            'Tier': ['Entry (1st Year)', 'Target (Steady State)', 'Premium (Full Bundle)', 'Ref: Global Apps'],
-            'Range': ['€70K-€110K/year', '€110K-€150K/year', '€150K-€190K/year', '€300K-€400K/year'],
-            'Includes': ['Launcher only', 'Launcher', 'Launcher + OOBE + Home Reco + Banner', 'Full package'],
-            'Rationale': ['Close 1st local partner. Proof of concept.',
-                         'Fee = 8-11% of incremental ad revenue.',
-                         'Max visibility at ~50% of global price.',
-                         'What Netflix/Disney+/Prime pay. Ceiling.']
-        })
-        st.dataframe(df_price, use_container_width=True, hide_index=True)
-
-        st.markdown("""
-        <div class="green-box">
-            <strong>💰 Partner ROI:</strong> Even at €150K/year, the incremental ad revenue potential is
-            <strong>€1.4M+</strong> → <strong>ROI = 9:1</strong>
-        </div>
-        """, unsafe_allow_html=True)
-
-# ============================================================
-# NEGOTIATION STRATEGY
-# ============================================================
-elif section == "🤝 Negotiation Strategy":
-    st.header("🤝 Recommended Negotiation Strategy")
-
-    tab1, tab2, tab3, tab4 = st.tabs(["🔄 Domino Effect", "📦 Product Tiers", "🎯 Partner Arguments", "📅 Timeline"])
-
-    with tab1:
-        st.subheader("Competitive Dynamics: The Domino Effect")
-        st.write("""
-        **Mediaset** (Telecinco, Cuatro) and **Atresmedia** (Antena 3, La Sexta) are direct competitors
-        for the same generalist audience in Spain. If one secures Launcher Placement, the other faces
-        an immediate, measurable competitive disadvantage.
-        """)
-        st.markdown("""
-        <div class="highlight-box">
-            <strong>Recommendation:</strong> Present to both simultaneously, making it clear that slots are limited.
-            The <strong>"first mover"</strong> gains a significant and lasting competitive advantage.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with tab2:
-        df_tiers = pd.DataFrame({
-            'Tier': ['Basic', 'Standard', 'Premium'],
-            'Includes': ['Launcher Placement', 'Launcher + OOBE', 'Launcher + OOBE + Home Reco + Banner'],
-            'Price': ['€70K-€110K/year', '€130K-€170K/year', '€170K-€210K/year'],
-            'Best For': ['Year 1 proof of concept', 'Capture users from first TV setup',
-                        'Maximum visibility at ~50% global price']
-        })
-        st.dataframe(df_tiers, use_container_width=True, hide_index=True)
-
-    with tab3:
-        col1, col2 = st.columns(2)
-        with col1:
-            st.subheader("📺 Mediaset Infinity")
-            st.markdown("""
-            - **+23% YoY** digital users (2025)
-            - 3.4M users but only **4.2% LG penetration** — losing >50% potential
-            - **FIFA Club World Cup** rights maximize reach
-            - **ROI: 9:1** (€150K fee vs €1.4M incremental revenue)
-            - If Atresplayer signs first, Mediaset loses ground permanently
-            """)
-        with col2:
-            st.subheader("📺 Atresplayer")
-            st.markdown("""
-            - Best visitors since May 2024 (**3.2M Jan 2026, +20% YoY**)
-            - 3.6M users, only **3.6% LG penetration** — most disadvantaged (Index 0.41)
-            - **Most national premieres** of any platform
-            - **ROI: 8-10:1** (€110-150K fee vs €1.2-1.5M revenue)
-            - If Mediaset enters Launcher, Atresplayer loses share
-            """)
-
-    with tab4:
-        st.subheader("Recommended Timeline")
-        timeline = pd.DataFrame({
-            'When': ['June 2026', 'July 2026', 'August 2026', 'Q4 2026', 'Q1 2027'],
-            'Action': [
-                'Send formal proposal to both partners',
-                'Negotiation meetings with weighted data & growth scenarios',
-                'Close at least one deal before LaLiga season',
-                'Measure results vs. projections. Build success case.',
-                'Both partners placed. Target DAZN, Movistar+ next.'
-            ]
-        })
-        st.dataframe(timeline, use_container_width=True, hide_index=True)
-
-# ============================================================
-# GLOSSARY
-# ============================================================
-elif section == "📖 Glossary":
-    st.header("📖 Glossary & Definitions")
-
-    tab1, tab2, tab3 = st.tabs(["🔤 Acronyms", "📏 Metrics & KPIs", "🏭 Industry Terms"])
-
-    with tab1:
-        st.subheader("A.1 Acronyms & Abbreviations")
-        acronyms = {
-            'ARPU': 'Average Revenue Per User — avg revenue generated per user over a given period.',
-            'AVOD': 'Advertising-based Video On Demand — free streaming funded by ads (e.g., Pluto TV).',
-            'CPA': 'Cost Per Acquisition — pricing model where advertiser pays per completed action.',
-            'CPM': 'Cost Per Mille — cost per 1,000 ad impressions.',
-            'CTV': 'Connected TV — any TV connected to the internet for streaming.',
-            'DIAL': 'Discovery and Launch protocol — allows phones/tablets to discover and launch apps on a TV.',
-            'EU5': 'Europe Big 5 — UK, Germany, France, Italy, Spain.',
-            'FAST': 'Free Ad-Supported Streaming TV — linear-style free channels (e.g., Pluto TV, Samsung TV Plus).',
-            'GIP': 'Global Input Priority — LG webOS feature that auto-launches the last-used app on power-on.',
-            'HDMI': 'High-Definition Multimedia Interface — physical cable for external devices.',
-            'HQ / EHQ': 'Headquarters (Seoul) / European Headquarters (UK).',
-            'KPI': 'Key Performance Indicator.',
-            'OOBE': 'Out-Of-Box Experience — initial TV setup flow with app recommendations.',
-            'ROI': 'Return On Investment — ratio of profit to cost.',
-            'SVoD': 'Subscription Video On Demand — paid streaming (Netflix, Disney+, etc.).',
-            'TDT': "Television Digital Terrestre — Spain's free-to-air digital TV system.",
-            'UD': 'Unique Devices — number of distinct TV sets that performed an action.',
-            'webOS': "LG's proprietary Smart TV operating system (since 2014).",
-            'YoY': 'Year-over-Year — comparison between same period in consecutive years.'
-        }
-        df_acr = pd.DataFrame({'Acronym': acronyms.keys(), 'Definition': acronyms.values()})
-        st.dataframe(df_acr, use_container_width=True, hide_index=True)
-
-    with tab2:
-        st.subheader("A.2 Key Metrics & KPIs")
-        metrics = {
-            'App Access': 'Total app launches on LG TVs. One device opening Netflix 10x = 10 App Access.',
-            'App UD': 'Unique Devices that launched an app at least once. 10 opens = 1 App UD.',
-            'App Access - Remote Hot Key': 'Launches via dedicated physical button on remote.',
-            'App Access - Launcher': 'Launches via clicking icon in the webOS Launcher Bar.',
-            'App Access - Text Search': 'Launches from typing in universal search.',
-            'App Access - Voice Search': 'Launches from voice query via Magic Remote mic.',
-            'App Access - Voice Command': 'Direct voice instruction (e.g., "Open Netflix").',
-            'App Access - GIP': 'Auto-launch via Global Input Priority on power-on.',
-            'App Access - DIAL': 'Launch from external device (phone casting).',
-            'App Access - Home Reco': 'Launch from Home screen recommended content cards.',
-            'Capture Index': 'LG Penetration / Market Penetration. >1.0 = over-performance.',
-            'LG TV Penetration': 'App UD / LG Base (5.38M).',
-            'Market Penetration': 'Platform Users / Adult Population (~39M).',
-            'Incremental Devices': 'Projected App UD (with placement) minus Current App UD.'
-        }
-        df_met = pd.DataFrame({'Metric': metrics.keys(), 'Definition': metrics.values()})
-        st.dataframe(df_met, use_container_width=True, hide_index=True)
-
-    with tab3:
-        st.subheader("A.3 Industry & Technical Terms")
-        terms = {
-            'Launcher / Launcher Bar': 'Horizontal strip of app icons at bottom of webOS home screen.',
-            'Launcher Placement': 'Paid agreement to pre-install and pin an app on the Launcher by default.',
-            'Home Screen Shelves': 'Horizontal rows of recommended content above the Launcher Bar.',
-            'Hot Key': 'Dedicated physical button on remote branded with an app logo.',
-            'LG Content Store': 'Built-in app marketplace on LG webOS TVs.',
-            'Magic Remote': "LG pointer-style remote with mic, scroll wheel & hot keys.",
-            'Pay-TV': 'Subscription TV services (cable/satellite/IPTV).',
-            'Free-to-Air (FTA)': 'Free TV via antenna (TDT in Spain, Freeview in UK).',
-            'Telco Bundle': 'Streaming included in telecom packages (e.g., Movistar Fusion).',
-            'Revenue Share': 'Partner pays % of revenue to TV manufacturer instead of fixed fee.',
-            'First Mover Advantage': 'Benefit of being the first local partner to secure placement.',
-            'Installed Base': 'Total active LG Smart TVs in a market (Spain: 5.38M).'
-        }
-        df_terms = pd.DataFrame({'Term': terms.keys(), 'Definition': terms.values()})
-        st.dataframe(df_terms, use_container_width=True, hide_index=True)
+with st.expander("🏭 Industry Terms"):
+    terms = {
+        'Launcher Placement': 'Paid agreement to pre-install an app on the Launcher Bar by default.',
+        'Hot Key': 'Physical branded button on remote (e.g., Netflix button).',
+        'Home Screen Shelves': 'Content recommendation rows above the Launcher Bar.',
+        'Magic Remote': "LG's pointer remote with mic, scroll wheel & hot keys.",
+        'Pay-TV': 'Subscription TV (cable/satellite/IPTV).', 'FTA / TDT': 'Free TV via antenna.',
+        'Telco Bundle': 'Streaming bundled with telecom packages.', 'Revenue Share': 'Partner pays % of revenue instead of fixed fee.',
+        'First Mover Advantage': 'Competitive edge from being the first local partner to secure placement.',
+        'Installed Base': 'Total active LG Smart TVs in a market (Spain: 5.38M).'
+    }
+    st.dataframe(pd.DataFrame({'Term': terms.keys(), 'Definition': terms.values()}),
+                 use_container_width=True, hide_index=True)
 
 # ============================================================
 # FOOTER
 # ============================================================
 st.markdown("---")
-st.caption("📺 LG Electronics Spain | Marketing & Media Department | June 2026 | Confidential")
+st.markdown("""
+<div style="text-align:center; padding: 1rem; color: #999; font-size: 0.85rem;">
+    📺 LG Electronics Spain · Marketing & Media Department · June 2026 · Confidential<br>
+    Data: LG webOS Analytics Jan-May 2026 · GfK DAM 2025 · JustWatch · CNMC · Futuresource
+</div>
+""", unsafe_allow_html=True)
