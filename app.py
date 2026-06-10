@@ -186,6 +186,22 @@ html, body, [class*="st-"] { font-family: 'Inter', sans-serif; }
 .timeline-content strong { color: #1a1a2e; }
 .timeline-content p { color: #555; margin: 0.3rem 0 0 0; font-size: 0.9rem; }
 
+details {
+    background: #f8f9fa; padding: 0.8rem 1.2rem; border-radius: 10px;
+    margin: 0.5rem 0; cursor: pointer;
+}
+details summary {
+    font-weight: 600; font-size: 0.95rem; color: #1a1a2e;
+    list-style: none; display: flex; align-items: center; gap: 0.5rem;
+}
+details summary::before {
+    content: '+ '; color: #A50034; font-weight: 800; font-size: 1.1rem;
+}
+details[open] summary::before { content: '- '; }
+details p {
+    color: #555; margin-top: 0.5rem; font-size: 0.9rem; line-height: 1.6;
+}
+
 div[data-testid="stMetric"] {
     background-color: #F8F9FA; padding: 1rem; border-radius: 12px;
     border: 1px solid #E9ECEF;
@@ -205,7 +221,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# KPI row
 st.markdown("""
 <div class="kpi-row">
     <div class="kpi kpi-red">
@@ -221,7 +236,7 @@ st.markdown("""
         <div class="label">Partner ROI<br>at target price</div>
     </div>
     <div class="kpi kpi-gold">
-        <div class="number">EUR70K-190K</div>
+        <div class="number">EUR 70K-190K</div>
         <div class="label">Recommended Price<br>(Spain-adjusted)</div>
     </div>
 </div>
@@ -243,7 +258,7 @@ with col1:
     Spain has **5.38 million active LG Smart TVs** and streaming is the dominant use case.
     HDMI usage has dropped 43% since 2016 as viewers migrate to apps.
 
-    But not all apps are equal on the home screen. **Three global players** pay EUR300K-400K/year
+    But not all apps are equal on the home screen. **Three global players** pay EUR 300K-400K/year
     for a guaranteed spot on the Launcher Bar. **Two local broadcasters** with millions of
     Spanish users do not.
 
@@ -473,7 +488,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-Global platforms pay **EUR300K-400K/year**. But Spain is not the UK or the US.
+Global platforms pay **EUR 300K-400K/year**. But Spain is not the UK or the US.
 We applied **4 valuation methods** and a **25% Spain market discount**.
 """)
 
@@ -481,14 +496,14 @@ tab1, tab2 = st.tabs(["Valuation Methods", "Why the Discount?"])
 
 with tab1:
     methods_data = [
-        ("Method 1 - Cost per Incremental Device", "EUR46K - EUR76K", 46, 76, C['blue'],
-         "EUR350K / 1.88M incremental = EUR0.19/device. Applied to +242K incremental devices."),
-        ("Method 2 - Ad Revenue Value (AVOD)", "EUR140K - EUR210K", 140, 210, C['placed'],
-         "23.2M incremental sessions x EUR20 CPM = EUR1.4M. Fee = 10-15% of incremental revenue."),
-        ("Method 3 - Premium Subscription Conversion", "EUR140K - EUR210K", 140, 210, C['purple'],
-         "24.2K new subs x EUR3.99 x 12 = EUR1.16M in sub revenue. Fee = 12-18%."),
-        ("Method 4 - Market Proportionality", "EUR85K - EUR120K", 85, 120, '#E67E22',
-         "Global apps: 14M users = EUR350K = EUR0.025/user. Mediaset 3.4M x EUR0.025 x 1.35 = EUR115K.")
+        ("Method 1 - Cost per Incremental Device", "EUR 46K - EUR 76K", 46, 76, C['blue'],
+         "EUR 350K / 1.88M incremental = EUR 0.19/device. Applied to +242K incremental devices."),
+        ("Method 2 - Ad Revenue Value (AVOD)", "EUR 140K - EUR 210K", 140, 210, C['placed'],
+         "23.2M incremental sessions x EUR 20 CPM = EUR 1.4M. Fee = 10-15% of incremental revenue."),
+        ("Method 3 - Premium Subscription Conversion", "EUR 140K - EUR 210K", 140, 210, C['purple'],
+         "24.2K new subs x EUR 3.99 x 12 = EUR 1.16M in sub revenue. Fee = 12-18%."),
+        ("Method 4 - Market Proportionality", "EUR 85K - EUR 120K", 85, 120, '#E67E22',
+         "Global apps: 14M users = EUR 350K = EUR 0.025/user. Mediaset 3.4M x EUR 0.025 x 1.35 = EUR 115K.")
     ]
 
     fig = go.Figure()
@@ -496,13 +511,13 @@ with tab1:
         fig.add_trace(go.Bar(
             y=[name], x=[hi - lo], base=[lo], orientation='h',
             marker_color=color, showlegend=False,
-            text=f'EUR{lo}K - EUR{hi}K', textposition='inside',
+            text=f'EUR {lo}K - EUR {hi}K', textposition='inside',
             textfont=dict(color='white', size=12)
         ))
     fig.add_vrect(x0=70, x1=190, fillcolor=C['lg'], opacity=0.07, line_width=0)
     fig.add_vline(x=70, line_dash="dot", line_color=C['lg'], line_width=1)
     fig.add_vline(x=190, line_dash="dot", line_color=C['lg'], line_width=1)
-    fig.add_annotation(x=130, y=-0.4, text="Recommended range: EUR70K - EUR190K",
+    fig.add_annotation(x=130, y=-0.4, text="Recommended range: EUR 70K - EUR 190K",
                        showarrow=False, font=dict(color=C['lg'], size=12))
     fig.update_layout(
         height=300, margin=dict(l=0, r=0, t=10, b=40),
@@ -512,9 +527,14 @@ with tab1:
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    st.markdown("#### Detail by method")
     for name, range_str, lo, hi, color, desc in methods_data:
-        with st.expander(name + " = " + range_str + "/year"):
-            st.write(desc)
+        st.markdown(f"""
+        <details style="border-left:4px solid {color};">
+            <summary>{name} = {range_str}/year</summary>
+            <p>{desc}</p>
+        </details>
+        """, unsafe_allow_html=True)
 
 with tab2:
     st.markdown("""
@@ -522,10 +542,10 @@ with tab2:
         <tr><th>Factor</th><th>Spain</th><th>UK</th><th>US</th></tr>
         <tr><td>Pay-TV Penetration</td><td class="bad">&lt;45%</td><td>~65%</td><td>~85%</td></tr>
         <tr><td>AVOD/FAST Weekly Reach</td><td><strong>75%</strong> (#1 in EU)</td><td>~45%</td><td>~50%</td></tr>
-        <tr><td>SVoD ARPU</td><td class="bad">~EUR8.2/month</td><td>~EUR11-12</td><td>~EUR13-15</td></tr>
+        <tr><td>SVoD ARPU</td><td class="bad">~EUR 8.2/month</td><td>~EUR 11-12</td><td>~EUR 13-15</td></tr>
         <tr><td>Telco Bundle Dependency</td><td class="bad">41.3%</td><td>~25%</td><td>~15%</td></tr>
         <tr><td>Password Sharing</td><td>13.2%</td><td>~10%</td><td>~8%</td></tr>
-        <tr><td>Local Partner Model</td><td>AVOD + EUR3-4 premium</td><td colspan="2">SVoD EUR8-16/month</td></tr>
+        <tr><td>Local Partner Model</td><td>AVOD + EUR 3-4 premium</td><td colspan="2">SVoD EUR 8-16/month</td></tr>
     </table>
     """, unsafe_allow_html=True)
     st.markdown("""
@@ -541,22 +561,22 @@ st.markdown("""
     <tr><th>Tier</th><th>Includes</th><th>Price/Year</th><th>Rationale</th></tr>
     <tr>
         <td><strong>Entry</strong></td><td>Launcher only</td>
-        <td class="good"><strong>EUR70K - EUR110K</strong></td>
+        <td class="good"><strong>EUR 70K - EUR 110K</strong></td>
         <td>1st year proof of concept. Trigger competitive dynamics.</td>
     </tr>
     <tr>
         <td><strong>Target</strong></td><td>Launcher</td>
-        <td><strong>EUR110K - EUR150K</strong></td>
-        <td>Fee = 8-11% of incremental ad revenue (EUR1.4M+).</td>
+        <td><strong>EUR 110K - EUR 150K</strong></td>
+        <td>Fee = 8-11% of incremental ad revenue (EUR 1.4M+).</td>
     </tr>
     <tr>
         <td><strong>Premium</strong></td><td>Launcher + OOBE + Home Reco + Banner</td>
-        <td><strong>EUR150K - EUR190K</strong></td>
+        <td><strong>EUR 150K - EUR 190K</strong></td>
         <td>Maximum visibility at ~50% of global price.</td>
     </tr>
     <tr>
         <td>Ref: Global</td><td>Full package</td>
-        <td>EUR300K - EUR400K</td>
+        <td>EUR 300K - EUR 400K</td>
         <td>What Netflix/Disney+/Prime pay. Ceiling.</td>
     </tr>
 </table>
@@ -564,7 +584,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="cta-box">
-    <h3>Partner ROI: Even at EUR150K/year the incremental ad revenue is EUR1.4M+ = ROI of 9:1</h3>
+    <h3>Partner ROI: Even at EUR 150K/year the incremental ad revenue is EUR 1.4M+ = ROI of 9:1</h3>
     <p>The Launcher Placement pays for itself nearly 10 times over.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -595,7 +615,7 @@ with col1:
         +23% YoY growth in digital users<br>
         3.4M users but only 4.2% LG penetration (losing 54%)<br>
         FIFA Club World Cup rights = maximize reach<br>
-        ROI 9:1 at EUR150K<br>
+        ROI 9:1 at EUR 150K<br>
         Warning: If Atresplayer signs first, you lose ground permanently
         </p>
     </div>
@@ -608,7 +628,7 @@ with col2:
         Best visitors since May 2024 (3.2M, +20% YoY)<br>
         3.6M users but only 3.6% LG penetration (losing 59%)<br>
         Most national premieres of any platform<br>
-        ROI 8-10:1 at EUR110-150K<br>
+        ROI 8-10:1 at EUR 110-150K<br>
         Warning: If Mediaset enters Launcher, you lose share
         </p>
     </div>
@@ -643,56 +663,86 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-with st.expander("Acronyms and Abbreviations"):
-    acronyms = {
-        'ARPU': 'Average Revenue Per User.',
-        'AVOD': 'Advertising-based Video On Demand - free streaming funded by ads.',
-        'CPM': 'Cost Per Mille - cost per 1,000 ad impressions.',
-        'CTV': 'Connected TV - internet-connected television.',
-        'DIAL': 'Discovery and Launch - protocol for casting from phone to TV.',
-        'FAST': 'Free Ad-Supported Streaming TV.',
-        'GIP': 'Global Input Priority - auto-launches last-used app on power-on.',
-        'OOBE': 'Out-Of-Box Experience - first-time TV setup flow.',
-        'ROI': 'Return On Investment.',
-        'SVoD': 'Subscription Video On Demand.',
-        'TDT': 'Television Digital Terrestre - Spain free-to-air system.',
-        'UD': 'Unique Devices.',
-        'webOS': 'LG Smart TV operating system (since 2014).',
-        'YoY': 'Year-over-Year comparison.'
-    }
-    st.dataframe(pd.DataFrame({'Acronym': list(acronyms.keys()), 'Definition': list(acronyms.values())}),
-                 use_container_width=True, hide_index=True)
+# Acronyms
+acr_rows = ""
+for acr, defn in [
+    ('ARPU', 'Average Revenue Per User.'),
+    ('AVOD', 'Advertising-based Video On Demand - free streaming funded by ads.'),
+    ('CPM', 'Cost Per Mille - cost per 1,000 ad impressions.'),
+    ('CTV', 'Connected TV - internet-connected television.'),
+    ('DIAL', 'Discovery and Launch - protocol for casting from phone to TV.'),
+    ('FAST', 'Free Ad-Supported Streaming TV.'),
+    ('GIP', 'Global Input Priority - auto-launches last-used app on power-on.'),
+    ('OOBE', 'Out-Of-Box Experience - first-time TV setup flow.'),
+    ('ROI', 'Return On Investment.'),
+    ('SVoD', 'Subscription Video On Demand.'),
+    ('TDT', 'Television Digital Terrestre - Spain free-to-air system.'),
+    ('UD', 'Unique Devices.'),
+    ('webOS', 'LG Smart TV operating system (since 2014).'),
+    ('YoY', 'Year-over-Year comparison.')
+]:
+    acr_rows += f"<tr><td><strong>{acr}</strong></td><td style='text-align:left;'>{defn}</td></tr>"
 
-with st.expander("Key Metrics"):
-    metrics = {
-        'App Access': 'Total app launches. 1 device x 10 opens = 10 App Access.',
-        'App UD': 'Unique devices that launched an app. 1 device x 10 opens = 1 UD.',
-        'Capture Index': 'LG Penetration / Market Penetration. Above 1.0 = over-performance.',
-        'Remote Hot Key': 'Dedicated physical button on remote for an app.',
-        'Launcher': 'Horizontal app strip on webOS home screen.',
-        'GIP': 'Auto-launch of last-used app on TV power-on.',
-        'Home Reco': 'Recommended content cards on home screen shelves.',
-        'DIAL': 'App launch from phone/tablet to TV.',
-        'Incremental Devices': 'Projected UD with placement minus current UD.'
-    }
-    st.dataframe(pd.DataFrame({'Metric': list(metrics.keys()), 'Definition': list(metrics.values())}),
-                 use_container_width=True, hide_index=True)
+st.markdown(f"""
+<details>
+    <summary>Acronyms and Abbreviations</summary>
+    <table class="vs-table" style="margin-top:0.8rem;">
+        <tr><th style="width:120px;">Acronym</th><th>Definition</th></tr>
+        {acr_rows}
+    </table>
+</details>
+""", unsafe_allow_html=True)
 
-with st.expander("Industry Terms"):
-    terms = {
-        'Launcher Placement': 'Paid agreement to pre-install an app on the Launcher Bar by default.',
-        'Hot Key': 'Physical branded button on remote (e.g., Netflix button).',
-        'Home Screen Shelves': 'Content recommendation rows above the Launcher Bar.',
-        'Magic Remote': 'LG pointer remote with mic, scroll wheel and hot keys.',
-        'Pay-TV': 'Subscription TV (cable/satellite/IPTV).',
-        'FTA / TDT': 'Free TV via antenna.',
-        'Telco Bundle': 'Streaming bundled with telecom packages.',
-        'Revenue Share': 'Partner pays percentage of revenue instead of fixed fee.',
-        'First Mover Advantage': 'Competitive edge from being the first local partner to secure placement.',
-        'Installed Base': 'Total active LG Smart TVs in a market (Spain: 5.38M).'
-    }
-    st.dataframe(pd.DataFrame({'Term': list(terms.keys()), 'Definition': list(terms.values())}),
-                 use_container_width=True, hide_index=True)
+# Key Metrics
+met_rows = ""
+for met, defn in [
+    ('App Access', 'Total app launches. 1 device x 10 opens = 10 App Access.'),
+    ('App UD', 'Unique devices that launched an app. 1 device x 10 opens = 1 UD.'),
+    ('Capture Index', 'LG Penetration / Market Penetration. Above 1.0 = over-performance.'),
+    ('Remote Hot Key', 'Dedicated physical button on remote for an app.'),
+    ('Launcher', 'Horizontal app strip on webOS home screen.'),
+    ('GIP', 'Auto-launch of last-used app on TV power-on.'),
+    ('Home Reco', 'Recommended content cards on home screen shelves.'),
+    ('DIAL', 'App launch from phone/tablet to TV.'),
+    ('Incremental Devices', 'Projected UD with placement minus current UD.')
+]:
+    met_rows += f"<tr><td><strong>{met}</strong></td><td style='text-align:left;'>{defn}</td></tr>"
+
+st.markdown(f"""
+<details>
+    <summary>Key Metrics and KPIs</summary>
+    <table class="vs-table" style="margin-top:0.8rem;">
+        <tr><th style="width:160px;">Metric</th><th>Definition</th></tr>
+        {met_rows}
+    </table>
+</details>
+""", unsafe_allow_html=True)
+
+# Industry Terms
+term_rows = ""
+for term, defn in [
+    ('Launcher Placement', 'Paid agreement to pre-install an app on the Launcher Bar by default.'),
+    ('Hot Key', 'Physical branded button on remote (e.g., Netflix button).'),
+    ('Home Screen Shelves', 'Content recommendation rows above the Launcher Bar.'),
+    ('Magic Remote', 'LG pointer remote with mic, scroll wheel and hot keys.'),
+    ('Pay-TV', 'Subscription TV (cable/satellite/IPTV).'),
+    ('FTA / TDT', 'Free TV via antenna.'),
+    ('Telco Bundle', 'Streaming bundled with telecom packages.'),
+    ('Revenue Share', 'Partner pays percentage of revenue instead of fixed fee.'),
+    ('First Mover Advantage', 'Competitive edge from being first to secure placement.'),
+    ('Installed Base', 'Total active LG Smart TVs in a market (Spain: 5.38M).')
+]:
+    term_rows += f"<tr><td><strong>{term}</strong></td><td style='text-align:left;'>{defn}</td></tr>"
+
+st.markdown(f"""
+<details>
+    <summary>Industry and Technical Terms</summary>
+    <table class="vs-table" style="margin-top:0.8rem;">
+        <tr><th style="width:180px;">Term</th><th>Definition</th></tr>
+        {term_rows}
+    </table>
+</details>
+""", unsafe_allow_html=True)
 
 # ============================================================
 # FOOTER
