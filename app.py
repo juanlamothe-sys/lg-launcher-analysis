@@ -8,7 +8,7 @@ import numpy as np
 # PAGE CONFIG
 # ============================================================
 st.set_page_config(
-    page_title="LG Launcher Placement — Spain",
+    page_title="LG Launcher Placement - Spain",
     page_icon="📺",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -221,7 +221,7 @@ st.markdown("""
         <div class="label">Partner ROI<br>at target price</div>
     </div>
     <div class="kpi kpi-gold">
-        <div class="number">€70K-190K</div>
+        <div class="number">EUR70K-190K</div>
         <div class="label">Recommended Price<br>(Spain-adjusted)</div>
     </div>
 </div>
@@ -240,12 +240,12 @@ st.markdown("""
 col1, col2 = st.columns([1.2, 1])
 with col1:
     st.markdown("""
-    Spain has **5.38 million active LG Smart TVs** — and streaming is the dominant use case.
+    Spain has **5.38 million active LG Smart TVs** and streaming is the dominant use case.
     HDMI usage has dropped 43% since 2016 as viewers migrate to apps.
 
-    But not all apps are equal on the home screen. **Three global players** pay €300K-400K/year
-    for a guaranteed spot on the Launcher Bar. **Two local broadcasters** — with millions of
-    Spanish users — don't.
+    But not all apps are equal on the home screen. **Three global players** pay EUR300K-400K/year
+    for a guaranteed spot on the Launcher Bar. **Two local broadcasters** with millions of
+    Spanish users do not.
 
     The question is: **how much does that matter?**
     """)
@@ -253,11 +253,11 @@ with col2:
     st.markdown("""
     <table class="vs-table">
         <tr><th>Platform</th><th>Users Spain</th><th>Placement</th></tr>
-        <tr><td>Netflix</td><td>14.0M</td><td class="good">✅ Yes</td></tr>
-        <tr><td>Prime Video</td><td>12.6M</td><td class="good">✅ Yes</td></tr>
-        <tr><td>Disney+</td><td>6.6M</td><td class="good">✅ Yes</td></tr>
-        <tr><td>Mediaset Infinity</td><td>3.4M</td><td class="bad">❌ No</td></tr>
-        <tr><td>Atresplayer</td><td>3.6M</td><td class="bad">❌ No</td></tr>
+        <tr><td>Netflix</td><td>14.0M</td><td class="good">Yes</td></tr>
+        <tr><td>Prime Video</td><td>12.6M</td><td class="good">Yes</td></tr>
+        <tr><td>Disney+</td><td>6.6M</td><td class="good">Yes</td></tr>
+        <tr><td>Mediaset Infinity</td><td>3.4M</td><td class="bad">No</td></tr>
+        <tr><td>Atresplayer</td><td>3.6M</td><td class="bad">No</td></tr>
     </table>
     """, unsafe_allow_html=True)
 
@@ -272,7 +272,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("#### Where do app launches come from?")
-st.markdown("When an app has placement, users access it through **multiple doors**. Without it, there's only **one way in**.")
+st.markdown("When an app has placement, users access it through **multiple doors**. Without it, there is only **one way in**.")
 
 fig = go.Figure()
 for name, data, color in [
@@ -301,7 +301,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("""
     <div class="insight-card">
-        <h4>🔑 Apps WITH Placement</h4>
+        <h4>Apps WITH Placement</h4>
         <p>Diversify across <strong>3-5 channels</strong>: Remote Hot Key (~38-44%),
         Launcher (~26-46%), GIP (up to 33%), Home Recommendations, and DIAL.</p>
     </div>
@@ -309,16 +309,16 @@ with col1:
 with col2:
     st.markdown("""
     <div class="insight-card">
-        <h4>🔒 Apps WITHOUT Placement</h4>
+        <h4>Apps WITHOUT Placement</h4>
         <p>Depend <strong>93%+</strong> on a single channel: the Launcher. No hot key,
         no GIP, no recommendations. The user must <strong>actively find and install</strong> the app.</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("#### But couldn't this just be because Netflix is... Netflix?")
+st.markdown("#### But could this just be because Netflix is... Netflix?")
 st.markdown("""
 <div class="quote-box">
-    "Of course Netflix has more users — it's the biggest streaming brand in the world.
+    "Of course Netflix has more users - it is the biggest streaming brand in the world.
     The real question is: <strong>if we remove the brand effect, does placement still matter?</strong>"
 </div>
 """, unsafe_allow_html=True)
@@ -333,23 +333,20 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-To isolate the **placement effect** from the **brand effect**, we created the **Capture Index**:
-""")
+st.markdown("To isolate the **placement effect** from the **brand effect**, we created the **Capture Index**:")
 
 st.markdown("""
 <div class="verdict">
     <h3>Capture Index</h3>
-    <p>LG TV Penetration (%) ÷ Market Penetration (%)</p>
+    <p>LG TV Penetration (%) / Market Penetration (%)</p>
     <p style="font-size:0.85rem; margin-top:1rem;">
-    Index = 1.0 → App performs on LG exactly as its market share predicts<br>
-    Index > 1.0 → Placement <strong>amplifies</strong> the app beyond its natural weight<br>
-    Index < 1.0 → The app <strong>loses</strong> presence on LG TVs
+    Index = 1.0 : App performs on LG exactly as its market share predicts<br>
+    Index &gt; 1.0 : Placement <strong>amplifies</strong> the app beyond its natural weight<br>
+    Index &lt; 1.0 : The app <strong>loses</strong> presence on LG TVs
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# Capture Index chart
 bar_colors = [C['placed'] if c >= 1 else C['not_placed'] for c in CAP_IDX]
 fig = go.Figure()
 fig.add_trace(go.Bar(
@@ -367,7 +364,6 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-# Verdict
 st.markdown(f"""
 <div class="verdict">
     <h3>The Verdict</h3>
@@ -377,9 +373,8 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Penetration comparison
 st.markdown("#### The gap visualised: Market Share vs. LG Presence")
-apps_short = ['Netflix', 'Prime\nVideo', 'Disney+', 'Mediaset\nInfinity', 'Atresplayer']
+apps_short = ['Netflix', 'Prime Video', 'Disney+', 'Mediaset Inf.', 'Atresplayer']
 fig2 = go.Figure()
 fig2.add_trace(go.Bar(
     x=apps_short, y=MKT_PEN, name='Market Penetration',
@@ -409,7 +404,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("""
     <div class="insight-card">
-        <h4>📺 Mediaset Infinity</h4>
+        <h4>Mediaset Infinity</h4>
         <p><strong>3.4M users</strong> in Spain (8.7% market penetration),
         but only <strong>4.2%</strong> of LG TVs. Losing <strong>54%</strong> of its potential.</p>
     </div>
@@ -417,7 +412,7 @@ with col1:
 with col2:
     st.markdown("""
     <div class="insight-card">
-        <h4>📺 Atresplayer</h4>
+        <h4>Atresplayer</h4>
         <p><strong>3.6M users</strong> in Spain (9.2% market penetration),
         but only <strong>3.6%</strong> of LG TVs. Losing <strong>59%</strong> of its potential.</p>
     </div>
@@ -433,26 +428,25 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("If local partners achieved the same Capture Index as placed apps, here's what would happen:")
+st.markdown("If local partners achieved the same Capture Index as placed apps, here is what would happen:")
 
-for app_name, cur, con, opt, emoji in [
-    ('Mediaset Infinity', 226_400, 468_060, 627_200, '🟠'),
-    ('Atresplayer', 192_300, 494_960, 663_046, '🔵')
+for app_name, cur, con, opt in [
+    ('Mediaset Infinity', 226_400, 468_060, 627_200),
+    ('Atresplayer', 192_300, 494_960, 663_046)
 ]:
-    st.markdown(f"#### {emoji} {app_name}")
+    st.markdown(f"#### {app_name}")
     col1, col2, col3 = st.columns(3)
     col1.metric("Current", f"{cur:,.0f}", "No Placement", delta_color="off")
     col2.metric("Conservative", f"{con:,.0f}", f"+{con-cur:,.0f} (+{(con-cur)/cur*100:.0f}%)")
     col3.metric("Optimistic", f"{opt:,.0f}", f"+{opt-cur:,.0f} (+{(opt-cur)/cur*100:.0f}%)")
 
-# Projection chart
-fig = go.Figure()
 apps_l = ['Mediaset Infinity', 'Atresplayer']
-for j, (sc, vals, color) in enumerate([
+fig = go.Figure()
+for sc, vals, color in [
     ('Current', [226400, 192300], C['not_placed']),
     ('Conservative (Index=1.0)', [468060, 494960], C['gold']),
     ('Optimistic (Index=1.34)', [627200, 663046], C['placed'])
-]):
+]:
     fig.add_trace(go.Bar(
         y=apps_l, x=vals, name=sc, orientation='h', marker_color=color,
         text=[f'{v:,.0f}' for v in vals], textposition='outside',
@@ -474,95 +468,95 @@ st.plotly_chart(fig, use_container_width=True)
 st.markdown("""
 <div class="chapter">
     <span class="num">Chapter 5</span>
-    <h2>The Price: What's Fair for Spain?</h2>
+    <h2>The Price: What is Fair for Spain?</h2>
 </div>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-Global platforms pay **€300K-400K/year**. But Spain is not the UK or the US.
+Global platforms pay **EUR300K-400K/year**. But Spain is not the UK or the US.
 We applied **4 valuation methods** and a **25% Spain market discount**.
 """)
 
-tab1, tab2 = st.tabs(["📊 Valuation Methods", "🇪🇸 Why the Discount?"])
+tab1, tab2 = st.tabs(["Valuation Methods", "Why the Discount?"])
 
 with tab1:
     methods_data = [
-        ("Cost per Incremental Device", 46, 76, C['blue'],
-         "€350K / 1.88M incremental = €0.19/device → applied to +242K"),
-        ("Ad Revenue Value (AVOD)", 140, 210, C['placed'],
-         "23.2M incremental sessions × €20 CPM = €1.4M → fee = 10-15%"),
-        ("Premium Sub Conversion", 140, 210, C['purple'],
-         "24.2K new subs × €3.99 × 12 = €1.16M → fee = 12-18%"),
-        ("Market Proportionality", 85, 120, '#E67E22',
-         "3.4M users × €0.025/user × 1.35 local adj = ~€115K")
+        ("Method 1 - Cost per Incremental Device", "EUR46K - EUR76K", 46, 76, C['blue'],
+         "EUR350K / 1.88M incremental = EUR0.19/device. Applied to +242K incremental devices."),
+        ("Method 2 - Ad Revenue Value (AVOD)", "EUR140K - EUR210K", 140, 210, C['placed'],
+         "23.2M incremental sessions x EUR20 CPM = EUR1.4M. Fee = 10-15% of incremental revenue."),
+        ("Method 3 - Premium Subscription Conversion", "EUR140K - EUR210K", 140, 210, C['purple'],
+         "24.2K new subs x EUR3.99 x 12 = EUR1.16M in sub revenue. Fee = 12-18%."),
+        ("Method 4 - Market Proportionality", "EUR85K - EUR120K", 85, 120, '#E67E22',
+         "Global apps: 14M users = EUR350K = EUR0.025/user. Mediaset 3.4M x EUR0.025 x 1.35 = EUR115K.")
     ]
+
     fig = go.Figure()
-    for name, lo, hi, color, _ in methods_data:
+    for name, range_str, lo, hi, color, _ in methods_data:
         fig.add_trace(go.Bar(
             y=[name], x=[hi - lo], base=[lo], orientation='h',
             marker_color=color, showlegend=False,
-            text=f'€{lo}K – €{hi}K', textposition='inside',
+            text=f'EUR{lo}K - EUR{hi}K', textposition='inside',
             textfont=dict(color='white', size=12)
         ))
     fig.add_vrect(x0=70, x1=190, fillcolor=C['lg'], opacity=0.07, line_width=0)
     fig.add_vline(x=70, line_dash="dot", line_color=C['lg'], line_width=1)
     fig.add_vline(x=190, line_dash="dot", line_color=C['lg'], line_width=1)
-    fig.add_annotation(x=130, y=-0.4, text="Recommended range: €70K–€190K",
-                       showarrow=False, font=dict(color=C['lg'], size=12, weight=700))
+    fig.add_annotation(x=130, y=-0.4, text="Recommended range: EUR70K - EUR190K",
+                       showarrow=False, font=dict(color=C['lg'], size=12))
     fig.update_layout(
-        height=280, margin=dict(l=0, r=0, t=10, b=40),
-        xaxis=dict(title='€K / year', range=[0, 260]),
+        height=300, margin=dict(l=0, r=0, t=10, b=40),
+        xaxis=dict(title='EUR K / year', range=[0, 260]),
         yaxis=dict(autorange='reversed'),
         plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    for name, lo, hi, _, desc in methods_data:
-        with st.expander(f"**{name}** → €{lo}K–€{hi}K"):
+    for name, range_str, lo, hi, color, desc in methods_data:
+        with st.expander(name + " = " + range_str + "/year"):
             st.write(desc)
 
 with tab2:
     st.markdown("""
     <table class="vs-table">
-        <tr><th>Factor</th><th>Spain 🇪🇸</th><th>UK 🇬🇧</th><th>US 🇺🇸</th></tr>
+        <tr><th>Factor</th><th>Spain</th><th>UK</th><th>US</th></tr>
         <tr><td>Pay-TV Penetration</td><td class="bad">&lt;45%</td><td>~65%</td><td>~85%</td></tr>
         <tr><td>AVOD/FAST Weekly Reach</td><td><strong>75%</strong> (#1 in EU)</td><td>~45%</td><td>~50%</td></tr>
-        <tr><td>SVoD ARPU</td><td class="bad">~€8.2/month</td><td>~€11-12</td><td>~€13-15</td></tr>
+        <tr><td>SVoD ARPU</td><td class="bad">~EUR8.2/month</td><td>~EUR11-12</td><td>~EUR13-15</td></tr>
         <tr><td>Telco Bundle Dependency</td><td class="bad">41.3%</td><td>~25%</td><td>~15%</td></tr>
         <tr><td>Password Sharing</td><td>13.2%</td><td>~10%</td><td>~8%</td></tr>
-        <tr><td>Local Partner Model</td><td>AVOD + €3-4 premium</td><td colspan="2">SVoD €8-16/month</td></tr>
+        <tr><td>Local Partner Model</td><td>AVOD + EUR3-4 premium</td><td colspan="2">SVoD EUR8-16/month</td></tr>
     </table>
     """, unsafe_allow_html=True)
     st.markdown("""
     <div class="quote-box">
         <strong>Conclusion:</strong> Lower pay-TV adoption, AVOD dominance, lower ARPU, and bundle dependency
-        justify a <strong>25% discount</strong> vs. raw valuation — and <strong>50-70% discount</strong> vs. global pricing.
+        justify a <strong>25% discount</strong> vs. raw valuation and <strong>50-70% discount</strong> vs. global pricing.
     </div>
     """, unsafe_allow_html=True)
 
-# Pricing tiers
 st.markdown("#### Recommended Pricing Tiers")
 st.markdown("""
 <table class="vs-table">
     <tr><th>Tier</th><th>Includes</th><th>Price/Year</th><th>Rationale</th></tr>
     <tr>
-        <td><strong>🟢 Entry</strong></td><td>Launcher only</td>
-        <td class="good"><strong>€70K–€110K</strong></td>
+        <td><strong>Entry</strong></td><td>Launcher only</td>
+        <td class="good"><strong>EUR70K - EUR110K</strong></td>
         <td>1st year proof of concept. Trigger competitive dynamics.</td>
     </tr>
     <tr>
-        <td><strong>🔵 Target</strong></td><td>Launcher</td>
-        <td><strong>€110K–€150K</strong></td>
-        <td>Fee = 8-11% of incremental ad revenue (€1.4M+).</td>
+        <td><strong>Target</strong></td><td>Launcher</td>
+        <td><strong>EUR110K - EUR150K</strong></td>
+        <td>Fee = 8-11% of incremental ad revenue (EUR1.4M+).</td>
     </tr>
     <tr>
-        <td><strong>🟣 Premium</strong></td><td>Launcher + OOBE + Home Reco + Banner</td>
-        <td><strong>€150K–€190K</strong></td>
+        <td><strong>Premium</strong></td><td>Launcher + OOBE + Home Reco + Banner</td>
+        <td><strong>EUR150K - EUR190K</strong></td>
         <td>Maximum visibility at ~50% of global price.</td>
     </tr>
     <tr>
-        <td>⚫ Ref: Global</td><td>Full package</td>
-        <td>€300K–€400K</td>
+        <td>Ref: Global</td><td>Full package</td>
+        <td>EUR300K - EUR400K</td>
         <td>What Netflix/Disney+/Prime pay. Ceiling.</td>
     </tr>
 </table>
@@ -570,7 +564,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="cta-box">
-    <h3>💰 Partner ROI: Even at €150K/year → incremental ad revenue of €1.4M+ → ROI = 9:1</h3>
+    <h3>Partner ROI: Even at EUR150K/year the incremental ad revenue is EUR1.4M+ = ROI of 9:1</h3>
     <p>The Launcher Placement pays for itself nearly 10 times over.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -596,26 +590,26 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("""
     <div class="insight-card" style="border-left-color: #E67E22;">
-        <h4 style="color: #E67E22;">📺 Pitch to Mediaset Infinity</h4>
+        <h4 style="color: #E67E22;">Pitch to Mediaset Infinity</h4>
         <p>
-        • <strong>+23% YoY</strong> growth in digital users<br>
-        • 3.4M users → only <strong>4.2%</strong> LG penetration (losing 54%)<br>
-        • FIFA Club World Cup rights → maximize reach<br>
-        • <strong>ROI 9:1</strong> at €150K<br>
-        • ⚠️ If Atresplayer signs first, you lose ground permanently
+        +23% YoY growth in digital users<br>
+        3.4M users but only 4.2% LG penetration (losing 54%)<br>
+        FIFA Club World Cup rights = maximize reach<br>
+        ROI 9:1 at EUR150K<br>
+        Warning: If Atresplayer signs first, you lose ground permanently
         </p>
     </div>
     """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
     <div class="insight-card" style="border-left-color: #3498DB;">
-        <h4 style="color: #3498DB;">📺 Pitch to Atresplayer</h4>
+        <h4 style="color: #3498DB;">Pitch to Atresplayer</h4>
         <p>
-        • Best visitors since May 2024 (<strong>3.2M, +20% YoY</strong>)<br>
-        • 3.6M users → only <strong>3.6%</strong> LG penetration (losing 59%)<br>
-        • Most national premieres of any platform<br>
-        • <strong>ROI 8-10:1</strong> at €110-150K<br>
-        • ⚠️ If Mediaset enters Launcher, you lose share
+        Best visitors since May 2024 (3.2M, +20% YoY)<br>
+        3.6M users but only 3.6% LG penetration (losing 59%)<br>
+        Most national premieres of any platform<br>
+        ROI 8-10:1 at EUR110-150K<br>
+        Warning: If Mediaset enters Launcher, you lose share
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -623,7 +617,7 @@ with col2:
 st.markdown("#### Timeline")
 timeline = [
     ("Jun", "June 2026", "Send formal proposal to both partners with this analysis."),
-    ("Jul", "July 2026", "Negotiation meetings. Present weighted data & growth scenarios."),
+    ("Jul", "July 2026", "Negotiation meetings. Present weighted data and growth scenarios."),
     ("Aug", "August 2026", "Close at least one deal before LaLiga and fall content season."),
     ("Q4", "Q4 2026", "Measure results vs. projections. Build success case for partner #2."),
     ("Q1", "Q1 2027", "Both partners placed. Renegotiate upward. Target DAZN, Movistar+ next.")
@@ -640,33 +634,40 @@ for dot, title, desc in timeline:
     """, unsafe_allow_html=True)
 
 # ============================================================
-# GLOSSARY (expandable)
+# GLOSSARY
 # ============================================================
 st.markdown("""
 <div class="chapter">
     <span class="num">Reference</span>
-    <h2>📖 Glossary & Definitions</h2>
+    <h2>Glossary and Definitions</h2>
 </div>
 """, unsafe_allow_html=True)
 
-with st.expander("🔤 Acronyms & Abbreviations"):
+with st.expander("Acronyms and Abbreviations"):
     acronyms = {
-        'ARPU': 'Average Revenue Per User.', 'AVOD': 'Advertising-based Video On Demand — free streaming funded by ads.',
-        'CPM': 'Cost Per Mille — cost per 1,000 ad impressions.', 'CTV': 'Connected TV — internet-connected television.',
-        'DIAL': 'Discovery and Launch — protocol for casting from phone to TV.',
-        'FAST': 'Free Ad-Supported Streaming TV.', 'GIP': 'Global Input Priority — auto-launches last-used app on power-on.',
-        'OOBE': 'Out-Of-Box Experience — first-time TV setup flow.', 'ROI': 'Return On Investment.',
-        'SVoD': 'Subscription Video On Demand.', 'TDT': "Television Digital Terrestre — Spain's free-to-air system.",
-        'UD': 'Unique Devices.', 'webOS': "LG's Smart TV operating system.", 'YoY': 'Year-over-Year comparison.'
+        'ARPU': 'Average Revenue Per User.',
+        'AVOD': 'Advertising-based Video On Demand - free streaming funded by ads.',
+        'CPM': 'Cost Per Mille - cost per 1,000 ad impressions.',
+        'CTV': 'Connected TV - internet-connected television.',
+        'DIAL': 'Discovery and Launch - protocol for casting from phone to TV.',
+        'FAST': 'Free Ad-Supported Streaming TV.',
+        'GIP': 'Global Input Priority - auto-launches last-used app on power-on.',
+        'OOBE': 'Out-Of-Box Experience - first-time TV setup flow.',
+        'ROI': 'Return On Investment.',
+        'SVoD': 'Subscription Video On Demand.',
+        'TDT': 'Television Digital Terrestre - Spain free-to-air system.',
+        'UD': 'Unique Devices.',
+        'webOS': 'LG Smart TV operating system (since 2014).',
+        'YoY': 'Year-over-Year comparison.'
     }
-    st.dataframe(pd.DataFrame({'Acronym': acronyms.keys(), 'Definition': acronyms.values()}),
+    st.dataframe(pd.DataFrame({'Acronym': list(acronyms.keys()), 'Definition': list(acronyms.values())}),
                  use_container_width=True, hide_index=True)
 
-with st.expander("📏 Key Metrics"):
+with st.expander("Key Metrics"):
     metrics = {
-        'App Access': 'Total app launches. 1 device × 10 opens = 10 App Access.',
-        'App UD': 'Unique devices that launched an app. 1 device × 10 opens = 1 UD.',
-        'Capture Index': 'LG Penetration ÷ Market Penetration. >1.0 = over-performance.',
+        'App Access': 'Total app launches. 1 device x 10 opens = 10 App Access.',
+        'App UD': 'Unique devices that launched an app. 1 device x 10 opens = 1 UD.',
+        'Capture Index': 'LG Penetration / Market Penetration. Above 1.0 = over-performance.',
         'Remote Hot Key': 'Dedicated physical button on remote for an app.',
         'Launcher': 'Horizontal app strip on webOS home screen.',
         'GIP': 'Auto-launch of last-used app on TV power-on.',
@@ -674,21 +675,23 @@ with st.expander("📏 Key Metrics"):
         'DIAL': 'App launch from phone/tablet to TV.',
         'Incremental Devices': 'Projected UD with placement minus current UD.'
     }
-    st.dataframe(pd.DataFrame({'Metric': metrics.keys(), 'Definition': metrics.values()}),
+    st.dataframe(pd.DataFrame({'Metric': list(metrics.keys()), 'Definition': list(metrics.values())}),
                  use_container_width=True, hide_index=True)
 
-with st.expander("🏭 Industry Terms"):
+with st.expander("Industry Terms"):
     terms = {
         'Launcher Placement': 'Paid agreement to pre-install an app on the Launcher Bar by default.',
         'Hot Key': 'Physical branded button on remote (e.g., Netflix button).',
         'Home Screen Shelves': 'Content recommendation rows above the Launcher Bar.',
-        'Magic Remote': "LG's pointer remote with mic, scroll wheel & hot keys.",
-        'Pay-TV': 'Subscription TV (cable/satellite/IPTV).', 'FTA / TDT': 'Free TV via antenna.',
-        'Telco Bundle': 'Streaming bundled with telecom packages.', 'Revenue Share': 'Partner pays % of revenue instead of fixed fee.',
+        'Magic Remote': 'LG pointer remote with mic, scroll wheel and hot keys.',
+        'Pay-TV': 'Subscription TV (cable/satellite/IPTV).',
+        'FTA / TDT': 'Free TV via antenna.',
+        'Telco Bundle': 'Streaming bundled with telecom packages.',
+        'Revenue Share': 'Partner pays percentage of revenue instead of fixed fee.',
         'First Mover Advantage': 'Competitive edge from being the first local partner to secure placement.',
         'Installed Base': 'Total active LG Smart TVs in a market (Spain: 5.38M).'
     }
-    st.dataframe(pd.DataFrame({'Term': terms.keys(), 'Definition': terms.values()}),
+    st.dataframe(pd.DataFrame({'Term': list(terms.keys()), 'Definition': list(terms.values())}),
                  use_container_width=True, hide_index=True)
 
 # ============================================================
@@ -697,7 +700,7 @@ with st.expander("🏭 Industry Terms"):
 st.markdown("---")
 st.markdown("""
 <div style="text-align:center; padding: 1rem; color: #999; font-size: 0.85rem;">
-    📺 LG Electronics Spain · Marketing & Media Department · June 2026 · Confidential<br>
-    Data: LG webOS Analytics Jan-May 2026 · GfK DAM 2025 · JustWatch · CNMC · Futuresource
+    LG Electronics Spain | Marketing and Media Department | June 2026 | Confidential<br>
+    Data: LG webOS Analytics Jan-May 2026 | GfK DAM 2025 | JustWatch | CNMC | Futuresource
 </div>
 """, unsafe_allow_html=True)
